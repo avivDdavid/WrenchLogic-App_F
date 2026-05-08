@@ -1,0 +1,222 @@
+[
+  {
+    "id": "vw",
+    "make": "פולקסווגן",
+    "models": [
+      {
+        "id": "golf-gti",
+        "name": "Golf GTI",
+        "years": [
+          {
+            "year": 2024,
+            "engines": [
+              { "id": "vw-gti-ea888-2024", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 265, "stockTorque": 370, "label": "2024 Golf GTI 2.0T EA888 Gen4 - 265 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              { "id": "vw-gti-ea888-2023", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 265, "stockTorque": 370, "label": "2023 Golf GTI 2.0T EA888 Gen4 - 265 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              { "id": "vw-gti-ea888-2022", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 245, "stockTorque": 370, "label": "2022 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              { "id": "vw-gti-ea888-2021", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 245, "stockTorque": 370, "label": "2021 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              { "id": "vw-gti-ea888-2019", "code": "EA888 Gen3b", "displacement": "2.0T", "stockHp": 230, "stockTorque": 350, "label": "2019 Golf GTI 2.0T EA888 Gen3b - 230 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              { "id": "vw-gti-ea888-2017", "code": "EA888 Gen3", "displacement": "2.0T", "stockHp": 220, "stockTorque": 350, "label": "2017 Golf GTI 2.0T EA888 Gen3 - 220 כ\"ס" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "golf-r",
+        "name": "Golf R",
+        "years": [
+          {
+            "year": 2023,
+            "engines": [
+              { "id": "vw-r-ea888-2023", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 333, "stockTorque": 420, "label": "2023 Golf R 2.0T EA888 Gen4 - 333 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              { "id": "vw-r-ea888-2022", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 320, "stockTorque": 420, "label": "2022 Golf R 2.0T EA888 Gen4 - 320 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              { "id": "vw-r-ea888-2019", "code": "EA888 Gen3b", "displacement": "2.0T", "stockHp": 310, "stockTorque": 400, "label": "2019 Golf R 2.0T EA888 Gen3b - 310 כ\"ס" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "seat",
+    "make": "סיאט",
+    "models": [
+      {
+        "id": "leon-cupra",
+        "name": "Leon Cupra",
+        "years": [
+          {
+            "year": 2023,
+            "engines": [
+              { "id": "seat-cupra-ea888-2023", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 300, "stockTorque": 400, "label": "2023 Leon Cupra 2.0T EA888 Gen4 - 300 כ\"ס" },
+              { "id": "seat-cupra-ea888-2023-265", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 265, "stockTorque": 400, "label": "2023 Leon Cupra 2.0T EA888 Gen4 - 265 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              { "id": "seat-cupra-ea888-2021", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 310, "stockTorque": 400, "label": "2021 Leon Cupra 2.0T EA888 Gen4 - 310 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              { "id": "seat-cupra-ea888-2019-300", "code": "EA888 Gen3b", "displacement": "2.0T", "stockHp": 300, "stockTorque": 380, "label": "2019 Leon Cupra 2.0T EA888 Gen3b - 300 כ\"ס" },
+              { "id": "seat-cupra-ea888-2019-290", "code": "EA888 Gen3b", "displacement": "2.0T", "stockHp": 290, "stockTorque": 380, "label": "2019 Leon Cupra R 2.0T EA888 Gen3b - 290 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              { "id": "seat-cupra-ea888-2017", "code": "EA888 Gen3", "displacement": "2.0T", "stockHp": 280, "stockTorque": 350, "label": "2017 Leon Cupra 2.0T EA888 Gen3 - 280 כ\"ס" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "honda",
+    "make": "הונדה",
+    "models": [
+      {
+        "id": "civic-type-r",
+        "name": "Civic Type R",
+        "years": [
+          {
+            "year": 2023,
+            "engines": [
+              { "id": "honda-ctr-k20c1-2023", "code": "K20C1", "displacement": "2.0T", "stockHp": 329, "stockTorque": 420, "label": "2023 Civic Type R 2.0T K20C1 - 329 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              { "id": "honda-ctr-k20c1-2022", "code": "K20C1", "displacement": "2.0T", "stockHp": 316, "stockTorque": 400, "label": "2022 Civic Type R 2.0T K20C1 - 316 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              { "id": "honda-ctr-k20c1-2020", "code": "K20C1", "displacement": "2.0T", "stockHp": 316, "stockTorque": 400, "label": "2020 Civic Type R 2.0T K20C1 - 316 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2018,
+            "engines": [
+              { "id": "honda-ctr-k20c1-2018", "code": "K20C1", "displacement": "2.0T", "stockHp": 320, "stockTorque": 400, "label": "2018 Civic Type R 2.0T K20C1 - 320 כ\"ס" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "civic-si",
+        "name": "Civic Si",
+        "years": [
+          {
+            "year": 2023,
+            "engines": [
+              { "id": "honda-si-l15b7-2023", "code": "L15B7", "displacement": "1.5T", "stockHp": 200, "stockTorque": 260, "label": "2023 Civic Si 1.5T L15B7 - 200 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              { "id": "honda-si-l15b7-2022", "code": "L15B7", "displacement": "1.5T", "stockHp": 200, "stockTorque": 260, "label": "2022 Civic Si 1.5T L15B7 - 200 כ\"ס" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hyundai",
+    "make": "יונדאי",
+    "models": [
+      {
+        "id": "i30-n",
+        "name": "i30 N",
+        "years": [
+          {
+            "year": 2023,
+            "engines": [
+              { "id": "hyundai-i30n-g4kh-2023-280", "code": "G4KH", "displacement": "2.0T", "stockHp": 280, "stockTorque": 392, "label": "2023 i30 N 2.0T G4KH - 280 כ\"ס" },
+              { "id": "hyundai-i30n-g4kh-2023-250", "code": "G4KH", "displacement": "2.0T", "stockHp": 250, "stockTorque": 353, "label": "2023 i30 N 2.0T G4KH - 250 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              { "id": "hyundai-i30n-g4kh-2022", "code": "G4KH", "displacement": "2.0T", "stockHp": 280, "stockTorque": 392, "label": "2022 i30 N 2.0T G4KH Performance - 280 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              { "id": "hyundai-i30n-g4kh-2021", "code": "G4KH", "displacement": "2.0T", "stockHp": 275, "stockTorque": 378, "label": "2021 i30 N 2.0T G4KH - 275 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              { "id": "hyundai-i30n-g4kh-2019-275", "code": "G4KH", "displacement": "2.0T", "stockHp": 275, "stockTorque": 378, "label": "2019 i30 N 2.0T G4KH Performance - 275 כ\"ס" },
+              { "id": "hyundai-i30n-g4kh-2019-250", "code": "G4KH", "displacement": "2.0T", "stockHp": 250, "stockTorque": 353, "label": "2019 i30 N 2.0T G4KH - 250 כ\"ס" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "i30n-fastback",
+        "name": "i30 N Fastback",
+        "years": [
+          {
+            "year": 2022,
+            "engines": [
+              { "id": "hyundai-i30nfb-g4kh-2022", "code": "G4KH", "displacement": "2.0T", "stockHp": 280, "stockTorque": 392, "label": "2022 i30 N Fastback 2.0T G4KH - 280 כ\"ס" }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              { "id": "hyundai-i30nfb-g4kh-2020", "code": "G4KH", "displacement": "2.0T", "stockHp": 275, "stockTorque": 378, "label": "2020 i30 N Fastback 2.0T G4KH - 275 כ\"ס" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

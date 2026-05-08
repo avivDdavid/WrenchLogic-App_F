@@ -1,0 +1,191 @@
+﻿[
+  {
+    "id": "wl-ind-001",
+    "name": "ערכת יניקת אוויר קר (Cold Air Intake Kit)",
+    "category": "induction",
+    "hpGain": 15,
+    "torqueGain": 18,
+    "imageUrl": "/images/parts/cold-air-intake.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-ind-002",
+    "name": "פילטר אוויר פאנל חלופי (Drop-in Panel Filter)",
+    "category": "induction",
+    "hpGain": 4,
+    "torqueGain": 5,
+    "imageUrl": "/images/parts/panel-filter.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-ind-003",
+    "name": "צינור כניסה לטורבו (Turbo Inlet Pipe)",
+    "category": "induction",
+    "hpGain": 8,
+    "torqueGain": 10,
+    "imageUrl": "/images/parts/turbo-inlet.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-exh-001",
+    "name": "דאון-פייפ ללא ממיר (Catless Downpipe 3.0\")",
+    "category": "exhaust",
+    "hpGain": 25,
+    "torqueGain": 35,
+    "imageUrl": "/images/parts/downpipe.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-exh-002",
+    "name": "מערכת פליטה קט-בק עם שסתומים (Valved Catback System)",
+    "category": "exhaust",
+    "hpGain": 12,
+    "torqueGain": 15,
+    "imageUrl": "/images/parts/catback.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-ecu-001",
+    "name": "תוכנת ניהול מנוע Stage 1",
+    "category": "ecu",
+    "hpGain": 60,
+    "torqueGain": 85,
+    "imageUrl": "/images/parts/ecu-stage1.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-ecu-002",
+    "name": "תוכנת ניהול מנוע Stage 2 (דורש דאון-פייפ)",
+    "category": "ecu",
+    "hpGain": 85,
+    "torqueGain": 115,
+    "imageUrl": "/images/parts/ecu-stage2.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-ecu-003",
+    "name": "תוכנת גיר (TCU Remap - DSG/ZF)",
+    "category": "ecu",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/tcu-tune.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-tur-001",
+    "name": "טורבו היברידי מוגדל (IS38 Hybrid Turbo Upgrade)",
+    "category": "engine",
+    "hpGain": 120,
+    "torqueGain": 140,
+    "imageUrl": "/images/parts/hybrid-turbo.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-eng-001",
+    "name": "אינטרקולר חזית מוגדל (Stage 2 FMIC)",
+    "category": "cooling",
+    "hpGain": 18,
+    "torqueGain": 22,
+    "imageUrl": "/images/parts/intercooler.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-eng-002",
+    "name": "בוכנות ותלתלים מחוזקים (Forged Internals)",
+    "category": "engine",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/forged-internals.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-fuel-001",
+    "name": "משאבת דלק לחץ גבוה (HPFP Upgrade)",
+    "category": "fuel",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/hpfp.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-fuel-002",
+    "name": "מזרקי דלק מוגדלים (Upgraded Fuel Injectors)",
+    "category": "fuel",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/injectors.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-sus-001",
+    "name": "סט קוילאוברים מתכווננים (Street/Track Coilovers)",
+    "category": "suspension",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/coilovers.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-sus-002",
+    "name": "מוטות מייצבים מעובים (Anti-Roll Sway Bars)",
+    "category": "suspension",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/sway-bars.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-brk-001",
+    "name": "ערכת בלמים מוגדלת 6 בוכנות (Big Brake Kit - 6 Pot)",
+    "category": "brakes",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/bbk.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-brk-002",
+    "name": "רפידות בלם ספורטיביות (Track-Day Brake Pads)",
+    "category": "brakes",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/brake-pads.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-whl-001",
+    "name": "חישוקים קלים מחושלים 19 אינץ' (Forged Lightweight Wheels)",
+    "category": "wheels",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/forged-wheels.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-ext-001",
+    "name": "ספוילר אחורי מקרבון פייבר (Carbon Fiber Aero Wing)",
+    "category": "body",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/carbon-wing.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-int-001",
+    "name": "מושב מרוץ קל משקל (Racing Bucket Seat)",
+    "category": "interior",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/bucket-seat.jpg",
+    "status": "none"
+  },
+  {
+    "id": "wl-gag-001",
+    "name": "שעון גדישה דיגיטלי (OBD2 Boost Gauge)",
+    "category": "interior",
+    "hpGain": 0,
+    "torqueGain": 0,
+    "imageUrl": "/images/parts/boost-gauge.jpg",
+    "status": "none"
+  }
+]

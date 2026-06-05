@@ -1,3 +1,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================================
+   LIGHT MODE
+   The app is authored in dark mode with hard-coded color classes
+   (e.g. bg-[#1E1E1E]) plus semantic tokens (text-on-surface).
+   Rather than rewrite every component, we remap those exact color
+   classes when <html> has the `light` class (set by ThemeContext).
+   The `html.light` prefix raises specificity so these win.
+   The accent (#FF6B00) is intentionally kept in both themes.
+   ============================================================ */
+
+/* ---- Backgrounds ---- */
+html.light .bg-\[\#121212\]      { background-color: #F5F5F5; }
+html.light .bg-\[\#131313\]      { background-color: #F5F5F5; }
+html.light .bg-\[\#1E1E1E\]      { background-color: #FFFFFF; }
+html.light .bg-\[\#1A1A1A\]      { background-color: #F0F0F0; } /* catalog landing hero */
+html.light .bg-\[\#2D2D2D\]      { background-color: #E8E8E8; }
+html.light .bg-\[\#252525\]      { background-color: #ECECEC; }
+html.light .bg-\[\#353534\]      { background-color: #E0E0E0; }
+
+/* translucent nav bars (bg-[#121212]/60 and /80) */
+html.light .bg-\[\#121212\]\/60  { background-color: rgba(245,245,245,0.60); }
+html.light .bg-\[\#121212\]\/80  { background-color: rgba(245,245,245,0.80); }
+
+/* gradient stop used over hero images */
+html.light .from-\[\#1E1E1E\]    { --tw-gradient-from: #FFFFFF var(--tw-gradient-from-position);
+                                   --tw-gradient-to: rgba(255,255,255,0) var(--tw-gradient-to-position);
+                                   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+
+/* ---- Text ---- */
+html.light .text-\[\#E0E0E0\]    { color: #1A1A1A; }
+html.light .text-\[\#c8c6c5\]    { color: #555555; }
+html.light .text-\[\#474746\]    { color: #6B6B6B; }
+html.light .text-\[\#474747\]    { color: #6B6B6B; }
+html.light .text-\[\#2D2D2D\]    { color: #C4C4C4; } /* faint decorative icons */
+
+/* ---- Borders ---- */
+html.light .border-\[\#2D2D2D\]  { border-color: #DDDDDD; }
+html.light .border-\[\#474747\]  { border-color: #CCCCCC; }
+html.light .divide-\[\#2D2D2D\] > :not([hidden]) ~ :not([hidden]) { border-color: #DDDDDD; }
+
+/* ---- Hover states ---- */
+html.light .hover\:bg-\[\#2D2D2D\]:hover { background-color: #E8E8E8; }
+html.light .hover\:bg-\[\#252525\]:hover { background-color: #ECECEC; }
+html.light .hover\:bg-\[\#1E1E1E\]:hover { background-color: #F0F0F0; }
+
+/* ---- Semantic tokens ---- */
+html.light .text-on-surface      { color: #1A1A1A; }
+html.light .text-on-background   { color: #1A1A1A; }
+html.light .text-secondary       { color: #555555; }
+html.light .text-surface-variant { color: #6B6B6B; }
+html.light .text-tertiary-container { color: #666666; }
+html.light .bg-surface-container-high    { background-color: #FFFFFF; }
+html.light .bg-surface-container-highest { background-color: #E0E0E0; }
+
+/* root surface from MainLayout */
+html.light body { background-color: #F5F5F5; }

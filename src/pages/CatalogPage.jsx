@@ -1,101 +1,156 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useVehicle } from '../context/VehicleContext';
+import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
 import CategoryCard from '../components/CategoryCard';
 
-const CATEGORIES = [
-  {
-    id: 'induction',
-    title: 'נשימה',
-    subtitle: 'Induction',
-    itemCount: '24 חלקים',
-    imageSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBFfPvvgcfDNaR1xd4-W7SF5Gx5WqYFOYm9YUoDgcx9zeYb61rBrI_qLa5huh9Q3WpCKH0i-3_bmL1wg_53UZnu8YhY95TABPChEBE8hcCj0RaCORpoQfOpR36fC3Y3h6B5Ljx9WIAy0_1DfuewvYHNFqjB39sStK-p87tkY7o4-zI8BFh0QxQIMHEwqn82yTkTrosK2orW3iEMWypGnxS1hsMgsQzBgQIuqtBQ0yrc6i7czbGlQm50CPzM1zjLMww2nE3M-ZT3uAs',
-  },
-  {
-    id: 'ecu',
-    title: 'תוכנה',
-    subtitle: 'ECU Tuning',
-    itemCount: '12 מערכות',
-    imageSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDzvkmoIsmwz4O7VTaG1vOjCZ5vRn9pa5CMfvuCwruNT8M8ojNcpuKym_6K5jz0m8eaLveRwM1UkYF0MuV-jmzjn3b7MS-CsaxMpC03hQeXZNR-DW48R6ITCgoVSRT1yOTQOIGSeJ-N-uKYE8m6tFGwYCaSGDQRTIue4hGNCZXyUCXv5sy1pm6TMa08RCaHq5mmmd6aiRFflhe48c7O1mLW9y-DX8O3M1o2d_xkCzsa4SicpBYLFQSYTdNPAr5UkchjBTnCjk29hT4',
-  },
-  {
-    id: 'brakes',
-    title: 'בלמים',
-    subtitle: 'Braking',
-    itemCount: '36 רכיבים',
-    imageSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCOQ42wr1sLTwADzACLf3A6H-kFxnmbAnGVTNOfG40hQm6Cqs3u-KfHUkne2xGfnX4N4rRpiTuLLCqNXoWsAHzv-AY-Vp_LeO3_cjn8cyyH328XD7t986QLKKliMFzWjWQdf_8ShfKGJx1bGjBNa4XRFb1haKebgUe6t3_5N5SzSVK9PfRx4ZCqZdN1knDicQrQsbkz1u7qkvOcNyeczg5bA4QfSJuYwLIErSZbrMvsdEn--a8KID9ZYxAI3ivbYQZW-JFW2HK7_YA',
-  },
-  {
-    id: 'engine',
-    title: 'מנוע',
-    subtitle: 'Engine',
-    itemCount: '128 חלקים פנימיים',
-    imageSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD-mVkJKyz1x7nyD5JCPvr7_9gRa7MdVDcShCsocXdMn0ZDkYESJ7F8lK6wOd30nNkh1V1OjmotJZYJTk8eM1h-kGP83HFXB-Qf7dGlxuHKCpCOOCmdYyUtf-2eNPwWFpwdrUcjm5WdIoce1QaUT7qUrJkd1JSQCmuW-xfRj5OwvdQYD87iB7xLyPWZSSGGhpu7qVkmf_iKWSmnFqzvPJo33UXiroinjHqO1q8Cz3KWvdjkxgrCAO9eb-bTjI9Dnbph-DC4brsZmqA',
-  },
-  {
-    id: 'cooling',
-    title: 'קירור',
-    subtitle: 'Cooling',
-    itemCount: '18 ערכות',
-    imageSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCh9Wno6_A0bX1jAoN_o0Qxhr9AekM3ZE2UeWzgugDRXqULeOrWPMFAhWfSnrh6DRsROrkCSyKlD-K1Nj9Dw5afOXMlDB5KLAyvmuVDb28XbXyAFB41Zrcf_VpLFfMEXXkDFQnWd19f95UzePhYvwyAmFppj0e3fAV5wII4QcEeYgtxhTVSzcHrq1-vl9DQRJM-Mn70asz-YdOh1ic5TDByk4eE1Ww8-RTWuztPx_b8irmqDKSupdODsu1OhhfMNEsoU5BVQaap8xQ',
-  },
-  {
-    id: 'body',
-    title: 'גוף',
-    subtitle: 'Body',
-    itemCount: '42 חלקי אווירודינמיקה',
-    imageSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAhggpVT6i0AES-J2TXOVnq5yUWBKSbx7krL4_fv90M8xY1uQADZ3yEnPLUyZMfknHnBx0Zm6bb1eFCWTkgnH3fE8wpGszyoDC3QRmYd0Ydgdra8QFgdsNAvKP_PIObCFgEB8zM09WYl8hrDCgMDGgz80lVBLbBLSifLfSOig_X_X3H_59WKNJiFqT7cSCWIPKioI_L7dge6ITquYtZWlJqg2THESFI5ca_zMlwoZOGXIIt-NzjBfh-dL6F9xAtBgANaxZmcA3Mk1w',
-  },
+// Category cards use the local AI-generated PNGs (public/images/parts/).
+const CATEGORY_IMAGES = {
+  engine:     '/images/parts/engine.jpg',
+  intake:     '/images/parts/intake.jpg',
+  exhaust:    '/images/parts/exhaust.jpg',
+  brakes:     '/images/parts/brakes.jpg',
+  suspension: '/images/parts/suspension.jpg',
+  boost:      '/images/parts/boost.jpg',
+};
+
+const DEFAULT_IMG = CATEGORY_IMAGES.engine;
+
+// Fixed, known catalog. Used as a fallback when the Supabase `categories`
+// query comes back empty — e.g. a guest (not signed in) hits the
+// authenticated-only RLS and gets `[]`. Ensures the 6 categories always
+// render. Real DB rows take precedence when available.
+const FALLBACK_CATEGORIES = [
+  { id: 'engine',     name: 'מנוע',   slug: 'engine',     description: 'שדרוגי מנוע וביצועים' },
+  { id: 'intake',     name: 'יניקה',  slug: 'intake',     description: 'מערכות יניקת אוויר' },
+  { id: 'exhaust',    name: 'פליטה',  slug: 'exhaust',    description: 'מערכות פליטה וזרימה' },
+  { id: 'brakes',     name: 'בלמים',  slug: 'brakes',     description: 'שיפור מערכת הבלימה' },
+  { id: 'suspension', name: 'מתלים',  slug: 'suspension', description: 'כיוון וחיזוק המתלה' },
+  { id: 'boost',      name: 'בוסט',   slug: 'boost',      description: 'שיפורי לחץ טורבו' },
 ];
 
 export default function CatalogPage() {
   const navigate = useNavigate();
   const { selectedVehicle } = useVehicle();
+  const { user } = useAuth();
+
+  const [categories, setCategories] = useState([]);
+  const [loading,    setLoading]    = useState(true);
+  const [error,      setError]      = useState(null);
 
   useEffect(() => {
-    if (!selectedVehicle) navigate('/', { replace: true });
-  }, [selectedVehicle, navigate]);
+    const fetchCategories = async () => {
+      setLoading(true);
+      const { data, error: sbError } = await supabase
+        .from('categories')
+        .select('id, name, slug, description')
+        .order('name');
 
-  if (!selectedVehicle) return null;
-
-  const { makeName, modelName, year, engine } = selectedVehicle;
+      if (!sbError && data && data.length > 0) {
+        setCategories(data);
+      } else {
+        // Empty (guest blocked by RLS) or unreachable → show the known catalog
+        // so the page is never blank. (Logged-in users get the live DB rows.)
+        setCategories(FALLBACK_CATEGORIES);
+      }
+      setLoading(false);
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <main className="pt-24 md:pt-8 md:pr-72 px-container-margin pb-24 md:pb-8 min-h-screen">
       <div className="max-w-7xl mx-auto w-full">
 
-        {/* Vehicle Context Banner */}
-        <div className="mb-lg flex flex-row-reverse items-center gap-3 bg-[#1E1E1E] border border-[#2D2D2D] rounded p-md">
-          <span className="material-symbols-outlined text-primary-container">directions_car</span>
-          <div className="text-right">
-            <p className="font-label-caps text-label-caps text-secondary uppercase">פלטפורמה פעילה</p>
-            <p className="font-mono-data text-mono-data text-on-surface" dir="ltr">
-              {year} {makeName} {modelName} &nbsp;|&nbsp; {engine.code} {engine.displacement} &nbsp;|&nbsp; {engine.stockHp} כ&quot;ס / {engine.stockTorque} Nm
+        {/* Landing intro — energetic hero */}
+        <section className="mb-xl text-right bg-[#1A1A1A] border-l-4 border-[#FF6B00] rounded-lg p-6 md:p-8">
+          <h1 className="font-h1 text-h1 font-black text-[#FF6B00] leading-tight">
+            WrenchLogic — כי הרכב שלך לא נולד להיות stock 🔥
+          </h1>
+          <p className="font-h2 text-h2 text-on-background mt-sm">
+            מצא את השדרוג הבא שלך. השווה חלקים. תכנן את הבנייה.
+          </p>
+          <p className="font-body-lg text-body-lg text-secondary mt-md max-w-3xl mr-auto">
+            בין אם אתה על Golf GTI, Civic Type R או i30 N — כאן תמצא את כל מה שצריך כדי לדחוף
+            את הרכב שלך לשלב הבא. בלי בולשיט, בלי ניחושים — רק נתונים.
+          </p>
+          {!user && (
+            <p className="font-body-md text-body-md text-tertiary-container mt-md">
+              💾 התחבר כדי לשמור את הגראז&apos; שלך ולחזור אליו מכל מכשיר.
             </p>
+          )}
+        </section>
+
+        {/* Vehicle Context Banner — only when a vehicle is selected */}
+        {selectedVehicle ? (
+          <div className="mb-lg flex flex-row-reverse items-center gap-3 bg-[#1E1E1E] border border-[#2D2D2D] rounded p-md">
+            <span className="material-symbols-outlined text-primary-container">directions_car</span>
+            <div className="text-right">
+              <p className="font-label-caps text-label-caps text-secondary uppercase">פלטפורמה פעילה</p>
+              <p className="font-mono-data text-mono-data text-on-surface" dir="ltr">
+                {selectedVehicle.year} {selectedVehicle.makeName} {selectedVehicle.modelName} &nbsp;|&nbsp; {selectedVehicle.engine.code} {selectedVehicle.engine.displacement} &nbsp;|&nbsp; {selectedVehicle.engine.stockHp} כ&quot;ס / {selectedVehicle.engine.stockTorque} Nm
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <button
+            onClick={() => navigate('/')}
+            className="mb-lg w-full flex flex-row-reverse items-center gap-3 bg-[#1E1E1E] border border-dashed border-primary-container/50 rounded p-md text-right hover:border-primary-container transition-colors"
+          >
+            <span className="material-symbols-outlined text-primary-container">directions_car</span>
+            <div className="text-right">
+              <p className="font-label-caps text-label-caps text-primary-container uppercase">בחר רכב</p>
+              <p className="font-body-md text-body-md text-secondary">
+                בחר את הרכב שלך כדי לראות התאמה מדויקת ומדדי ביצועים. ניתן לדפדף בקטגוריות גם בלי לבחור רכב.
+              </p>
+            </div>
+          </button>
+        )}
 
         {/* Page Header */}
         <header className="mb-lg text-right">
-          <h1 className="font-h1 text-h1 text-on-background">קטגוריות שיפורים</h1>
+          <h2 className="font-h1 text-h1 text-on-background">קטגוריות שיפורים</h2>
           <p className="font-body-lg text-body-lg text-tertiary-container mt-xs">
             בחר מערכת לשדרוגי ביצועים ונתוני דיאגנוסטיקה.
           </p>
         </header>
 
-        {/* 3×2 Category Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
-          {CATEGORIES.map(cat => (
-            <CategoryCard
-              key={cat.id}
-              title={cat.title}
-              subtitle={cat.subtitle}
-              itemCount={cat.itemCount}
-              imageSrc={cat.imageSrc}
-              onClick={() => navigate(`/catalog/category/${cat.id}`)}
-            />
-          ))}
-        </div>
+        {/* Loading */}
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-56 rounded-lg bg-[#1E1E1E] border border-[#2D2D2D] animate-pulse" />
+            ))}
+          </div>
+        )}
+
+        {/* Error */}
+        {!loading && error && (
+          <div className="flex flex-col items-center justify-center py-24 text-center gap-md">
+            <span className="material-symbols-outlined text-[56px] text-red-500">cloud_off</span>
+            <p className="font-h2 text-h2 text-on-surface">{error}</p>
+            <button onClick={() => window.location.reload()} className="border border-primary-container text-primary-container font-label-caps text-label-caps px-6 py-3 rounded hover:bg-primary-container hover:text-[#121212] transition-colors">
+              נסה שוב
+            </button>
+          </div>
+        )}
+
+        {/* Category Grid */}
+        {!loading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+            {categories.map(cat => (
+              <CategoryCard
+                key={cat.id}
+                title={cat.name}
+                subtitle={cat.slug.toUpperCase()}
+                itemCount={cat.description}
+                imageSrc={CATEGORY_IMAGES[cat.slug] ?? DEFAULT_IMG}
+                onClick={() => navigate(`/catalog/category/${cat.slug}`)}
+              />
+            ))}
+          </div>
+        )}
 
       </div>
     </main>

@@ -18,6 +18,21 @@ const DEFAULT_HERO_IMG = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCB
 const sum = (arr, key) => arr.reduce((acc, p) => acc + (p[key] ?? 0), 0);
 const scaleMax = (value) => Math.ceil((value * 1.4) / 100) * 100;
 
+// Approximate kerb weight (kg) per model — used for the 0-100 estimate.
+const MODEL_WEIGHTS = {
+  'Golf GTI':      1450,
+  'Golf R':        1500,
+  'Leon Cupra':    1420,
+  'Civic Type R':  1390,
+  'Civic Si':      1350,
+  'i30':           1280,
+  'Veloster N':    1430,
+};
+const DEFAULT_WEIGHT = 1400;
+
+// Theoretical 0-100 km/h estimate from power-to-weight (sport-car approximation).
+const estimate0to100 = (hp, weight) => Math.pow(weight / (hp * 4.5), 0.65) * 10;
+
 export default function MyGaragePage() {
   const navigate = useNavigate();
   const { selectedVehicle } = useVehicle();
@@ -52,7 +67,7 @@ export default function MyGaragePage() {
               הגראז&apos; מציג מדדי ביצועים והתאמות לפי הרכב שלך. בחר רכב כדי להתחיל.
             </p>
           </div>
-          <button onClick={() => navigate('/')} className="w-full bg-primary-container text-[#121212] font-label-caps text-label-caps py-4 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+          <button onClick={() => navigate('/select')} className="w-full bg-primary-container text-[#121212] font-label-caps text-label-caps py-4 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
             <span className="material-symbols-outlined">directions_car</span>
             בחר רכב
           </button>
@@ -73,25 +88,7 @@ export default function MyGaragePage() {
     );
   }
 
-  if (activeParts.length === 0) {
-    return (
-      <main className="pt-20 md:pt-8 md:pr-72 px-container-margin pb-24 min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-lg max-w-sm">
-          <span className="material-symbols-outlined text-[80px] text-[#2D2D2D]">garage</span>
-          <div>
-            <h2 className="font-h2 text-h2 text-on-surface mb-xs">הגראז&apos; שלך ריק</h2>
-            <p className="font-body-md text-body-md text-secondary">
-              עבור לקטלוג כדי לגלות חלפים ושיפורים שמתאימים ל‑{makeName} {modelName} שלך.
-            </p>
-          </div>
-          <button onClick={() => navigate('/catalog')} className="w-full bg-primary-container text-[#121212] font-label-caps text-label-caps py-4 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-            <span className="material-symbols-outlined">search</span>
-            עבור לקטלוג החלפים
-          </button>
-        </div>
-      </main>
-    );
-  }
+  const isEmpty = activeParts.length === 0;
 
   const installedParts = activeParts.filter(p => p.status === 'installed');
   const plannedParts   = activeParts.filter(p => p.status === 'planned');
@@ -105,17 +102,19 @@ export default function MyGaragePage() {
   const maxScaleHP     = scaleMax(targetHP);
   const maxScaleTorque = scaleMax(targetTorque);
 
+  // 0-100 km/h estimates (stock / current / planned)
+  const vehicleWeight = MODEL_WEIGHTS[modelName] ?? DEFAULT_WEIGHT;
+  const accelStock   = estimate0to100(baseHP,    vehicleWeight);
+  const accelCurrent = estimate0to100(currentHP, vehicleWeight);
+  const accelTarget  = estimate0to100(targetHP,  vehicleWeight);
+  const accelSaved   = accelStock - accelTarget;
+
   return (
     <main className="pt-20 md:pt-8 md:pr-72 px-container-margin pb-24 md:pb-xl min-h-screen">
       <div className="max-w-6xl mx-auto space-y-xl">
 
-        {/* Data source indicator */}
-        {user ? (
-          <div className="flex flex-row-reverse items-center gap-2 bg-[#1E1E1E] border border-[#00C853]/30 rounded p-sm font-mono-data text-[11px] text-[#00C853]">
-            <span className="material-symbols-outlined text-[14px]">cloud_done</span>
-            <span>נתונים מ-Supabase · garage_entries</span>
-          </div>
-        ) : (
+        {/* Guest banner — shown only when not logged in */}
+        {!user && (
           <div className="flex flex-row-reverse items-center justify-between gap-3 bg-[#FF6B00]/10 border border-[#FF6B00]/40 rounded p-md">
             <div className="flex flex-row-reverse items-center gap-2 text-right">
               <span className="material-symbols-outlined text-[18px] text-[#FF6B00]">info</span>
@@ -136,11 +135,14 @@ export default function MyGaragePage() {
         <section className="flex flex-col md:flex-row items-start md:items-center justify-between gap-md border-b border-[#2D2D2D] pb-lg">
           <div className="flex items-center gap-md">
             <div className="w-20 h-20 rounded-full bg-surface-container-high border-2 border-[#2D2D2D] overflow-hidden">
-              <img alt="User Avatar" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaon7rKumT_B6Lv8jSWCtDK4o6PnIUP7hd0kJBcC9MnLsb391zvVALXEDxWzfPGBxTfUC9cTripd35zGRjgddMmoWHyn5M5SvAQzI5BAsxDUAN724lrCWeRYgSbjOzAR5u-DuB0GRRlgyn1IDGN5AYO7u5wBKKq_jK9tgJnO9Y34DHzpHUDeObtLZnmBpfMWFoz_VXOixBfKJSmGf22VI3Z8phLZVvY-vwE5tUUbNfMqxvg-Z_0YvAQy39O_Fk4irQSUwfGwv-nKA" />
+              <img alt="תמונת פרופיל" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaon7rKumT_B6Lv8jSWCtDK4o6PnIUP7hd0kJBcC9MnLsb391zvVALXEDxWzfPGBxTfUC9cTripd35zGRjgddMmoWHyn5M5SvAQzI5BAsxDUAN724lrCWeRYgSbjOzAR5u-DuB0GRRlgyn1IDGN5AYO7u5wBKKq_jK9tgJnO9Y34DHzpHUDeObtLZnmBpfMWFoz_VXOixBfKJSmGf22VI3Z8phLZVvY-vwE5tUUbNfMqxvg-Z_0YvAQy39O_Fk4irQSUwfGwv-nKA" />
             </div>
             <div>
               <h1 className="font-h1 text-h1 text-on-surface uppercase">הגראז&apos; שלי</h1>
-              <p className="font-body-md text-body-md text-secondary">טיונר מקצועי • WrenchLogic</p>
+              <p className="font-body-md text-body-md text-primary-container font-semibold" dir="ltr">
+                {year} {makeName} {modelName} • {engine.code}
+              </p>
+              <p className="font-mono-data text-[11px] text-secondary">הגראז&apos; מציג שיפורים עבור הרכב הנבחר בלבד</p>
             </div>
           </div>
         </section>
@@ -149,7 +151,7 @@ export default function MyGaragePage() {
         <section className="relative w-full rounded-lg overflow-hidden border border-[#2D2D2D] bg-[#1E1E1E]">
           <div className="aspect-video md:aspect-[21/9] w-full relative">
             <img
-              alt={`${makeName} ${modelName}`}
+              alt={`תמונת ${makeName} ${modelName}`}
               className="w-full h-full object-cover opacity-80"
               src={MODEL_IMAGES[selectedVehicle.modelId] ?? DEFAULT_HERO_IMG}
               onError={(e) => { if (e.currentTarget.src !== DEFAULT_HERO_IMG) e.currentTarget.src = DEFAULT_HERO_IMG; }}
@@ -181,6 +183,50 @@ export default function MyGaragePage() {
           </div>
         </section>
 
+        {/* 0-100 km/h acceleration estimate */}
+        <section className="space-y-md">
+          <div className="flex items-baseline gap-sm border-b border-[#2D2D2D] pb-base">
+            <h3 className="font-h2 text-h2 text-primary-container uppercase">⏱ תאוצה 0-100</h3>
+            <span className="font-label-caps text-label-caps text-[#474746] tracking-widest">0-100 KM/H</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-md">
+            {/* Stock */}
+            <div className="bg-[#1E1E1E] border border-[#2D2D2D] rounded-lg p-md text-center">
+              <p className="font-label-caps text-label-caps text-secondary uppercase mb-xs">סטוק</p>
+              <p className="font-h1 text-h1 text-secondary">{accelStock.toFixed(1)}<span className="font-body-md text-body-md"> ש׳</span></p>
+            </div>
+            {/* Current */}
+            <div className="bg-[#1E1E1E] border border-primary-container/50 rounded-lg p-md text-center">
+              <p className="font-label-caps text-label-caps text-primary-container uppercase mb-xs">נוכחי</p>
+              <p className="font-h1 text-h1 text-primary-container">{accelCurrent.toFixed(1)}<span className="font-body-md text-body-md"> ש׳</span></p>
+            </div>
+            {/* Planned */}
+            <div className="bg-white/5 border border-white/20 rounded-lg p-md text-center">
+              <p className="font-label-caps text-label-caps text-on-surface/70 uppercase mb-xs">מתוכנן</p>
+              <p className="font-h1 text-h1 text-on-surface">{accelTarget.toFixed(1)}<span className="font-body-md text-body-md"> ש׳</span></p>
+            </div>
+          </div>
+          {accelSaved > 0.05 && (
+            <p className="font-body-md text-body-md text-[#00C853] text-center font-semibold">
+              ⚡ חסכת {accelSaved.toFixed(1)} שניות
+            </p>
+          )}
+          <p className="font-mono-data text-[11px] text-secondary text-center">* הערכה תיאורטית בלבד — תנאי נסיעה משתנים</p>
+        </section>
+
+        {/* Empty garage notice — vehicle still shown above */}
+        {isEmpty && (
+          <section className="flex flex-col items-center justify-center text-center gap-md bg-[#1E1E1E] border border-dashed border-[#2D2D2D] rounded-lg py-12 px-md">
+            <span className="material-symbols-outlined text-[64px] text-[#2D2D2D]">garage</span>
+            <p className="font-body-lg text-body-lg text-on-surface">הגראז&apos; ריק — הוסף חלפים מהקטלוג כדי לראות שינויים</p>
+            <button onClick={() => navigate('/catalog')} className="bg-primary-container text-[#121212] font-label-caps text-label-caps py-3 px-6 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+              <span className="material-symbols-outlined">search</span>
+              עבור לקטלוג החלפים
+            </button>
+          </section>
+        )}
+
+        {!isEmpty && (<>
         {/* Target Builder */}
         <TargetBuilder
           currentHP={currentHP}
@@ -234,7 +280,7 @@ export default function MyGaragePage() {
                       <span className="font-mono-data text-sm text-primary-container bg-primary-container/10 px-2 py-1 rounded whitespace-nowrap">
                         {part.hpGain > 0 ? `+${part.hpGain} HP` : '—'}
                       </span>
-                      <button onClick={() => removeFromGarage(part.id)} title="הסר מהגראז'" className="text-[#474746] hover:text-red-400 transition-colors">
+                      <button onClick={() => removeFromGarage(part.id)} title="הסר מהגראז'" aria-label="הסר חלף" className="text-[#474746] hover:text-red-400 transition-colors">
                         <span className="material-symbols-outlined text-[18px]">close</span>
                       </button>
                     </div>
@@ -275,7 +321,7 @@ export default function MyGaragePage() {
                         <span className="material-symbols-outlined text-[14px]">check</span>
                         התקן
                       </button>
-                      <button onClick={() => removeFromGarage(part.id)} title="הסר מהגראז'" className="text-[#474746] hover:text-red-400 transition-colors">
+                      <button onClick={() => removeFromGarage(part.id)} title="הסר מהגראז'" aria-label="הסר חלף" className="text-[#474746] hover:text-red-400 transition-colors">
                         <span className="material-symbols-outlined text-[18px]">close</span>
                       </button>
                     </div>
@@ -297,6 +343,7 @@ export default function MyGaragePage() {
           ownedIds={activeParts.map(p => p.id)}
           addToGarage={addToGarage}
         />
+        </>)}
       </div>
     </main>
   );

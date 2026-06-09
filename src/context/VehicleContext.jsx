@@ -1,26 +1,35 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const STORAGE_KEY = 'wrenchlogic_vehicle';
 
 const VehicleContext = createContext(null);
 
 export function VehicleProvider({ children }) {
-  const [selectedVehicle, setSelectedVehicle] = useState(() => {
+  const { user } = useAuth();
+
+  // In-memory by default. Guests never touch localStorage — their selection
+  // lives only in React state and is gone when the tab closes.
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+
+  // Signed-in users: hydrate the cached vehicle on login (instant restore).
+  useEffect(() => {
+    if (!user) return;
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  });
+      if (stored) setSelectedVehicle(JSON.parse(stored));
+    } catch { /* ignore corrupt cache */ }
+  }, [user]);
 
+  // Signed-in users: keep localStorage as a cache. Guests: do nothing.
   useEffect(() => {
+    if (!user) return;
     if (selectedVehicle) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedVehicle));
     } else {
       localStorage.removeItem(STORAGE_KEY);
     }
-  }, [selectedVehicle]);
+  }, [user, selectedVehicle]);
 
   return (
     <VehicleContext.Provider value={{ selectedVehicle, setSelectedVehicle }}>

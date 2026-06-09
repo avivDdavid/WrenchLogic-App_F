@@ -8,9 +8,368 @@
         "name": "Golf GTI",
         "years": [
           {
+            "year": 2000,
+            "engines": [
+              {
+                "id": "golf-gti-2000-150hp",
+                "code": "EA113",
+                "displacement": "1.8T",
+                "stockHp": 150,
+                "stockTorque": 220,
+                "label": "2000 Golf GTI 1.8T EA113 - 150 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2001,
+            "engines": [
+              {
+                "id": "golf-gti-2001-150hp",
+                "code": "EA113",
+                "displacement": "1.8T",
+                "stockHp": 150,
+                "stockTorque": 220,
+                "label": "2001 Golf GTI 1.8T EA113 - 150 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2002,
+            "engines": [
+              {
+                "id": "golf-gti-2002-150hp",
+                "code": "EA113",
+                "displacement": "1.8T",
+                "stockHp": 150,
+                "stockTorque": 220,
+                "label": "2002 Golf GTI 1.8T EA113 - 150 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2003,
+            "engines": [
+              {
+                "id": "golf-gti-2003-150hp",
+                "code": "EA113",
+                "displacement": "1.8T",
+                "stockHp": 150,
+                "stockTorque": 220,
+                "label": "2003 Golf GTI 1.8T EA113 - 150 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2004,
+            "engines": [
+              {
+                "id": "golf-gti-2004-200hp",
+                "code": "EA113",
+                "displacement": "2.0T FSI",
+                "stockHp": 200,
+                "stockTorque": 280,
+                "label": "2004 Golf GTI 2.0T FSI EA113 - 200 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2005,
+            "engines": [
+              {
+                "id": "golf-gti-2005-200hp",
+                "code": "EA113",
+                "displacement": "2.0T FSI",
+                "stockHp": 200,
+                "stockTorque": 280,
+                "label": "2005 Golf GTI 2.0T FSI EA113 - 200 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2006,
+            "engines": [
+              {
+                "id": "golf-gti-2006-200hp",
+                "code": "EA113",
+                "displacement": "2.0T FSI",
+                "stockHp": 200,
+                "stockTorque": 280,
+                "label": "2006 Golf GTI 2.0T FSI EA113 - 200 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2007,
+            "engines": [
+              {
+                "id": "golf-gti-2007-200hp",
+                "code": "EA113",
+                "displacement": "2.0T FSI",
+                "stockHp": 200,
+                "stockTorque": 280,
+                "label": "2007 Golf GTI 2.0T FSI EA113 - 200 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2008,
+            "engines": [
+              {
+                "id": "golf-gti-2008-200hp",
+                "code": "EA113",
+                "displacement": "2.0T FSI",
+                "stockHp": 200,
+                "stockTorque": 280,
+                "label": "2008 Golf GTI 2.0T FSI EA113 - 200 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2009,
+            "engines": [
+              {
+                "id": "golf-gti-2009-210hp",
+                "code": "EA113",
+                "displacement": "2.0T TSI",
+                "stockHp": 210,
+                "stockTorque": 280,
+                "label": "2009 Golf GTI 2.0T TSI EA113 - 210 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2010,
+            "engines": [
+              {
+                "id": "golf-gti-2010-210hp",
+                "code": "EA113",
+                "displacement": "2.0T TSI",
+                "stockHp": 210,
+                "stockTorque": 280,
+                "label": "2010 Golf GTI 2.0T TSI EA113 - 210 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2011,
+            "engines": [
+              {
+                "id": "golf-gti-2011-210hp",
+                "code": "EA113",
+                "displacement": "2.0T TSI",
+                "stockHp": 210,
+                "stockTorque": 280,
+                "label": "2011 Golf GTI 2.0T TSI EA113 - 210 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2012,
+            "engines": [
+              {
+                "id": "golf-gti-2012-210hp",
+                "code": "EA113",
+                "displacement": "2.0T TSI",
+                "stockHp": 210,
+                "stockTorque": 280,
+                "label": "2012 Golf GTI 2.0T TSI EA113 - 210 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2013,
+            "engines": [
+              {
+                "id": "golf-gti-2013-220hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 220,
+                "stockTorque": 350,
+                "label": "2013 Golf GTI 2.0T EA888 Gen3 - 220 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2014,
+            "engines": [
+              {
+                "id": "golf-gti-2014-220hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 220,
+                "stockTorque": 350,
+                "label": "2014 Golf GTI 2.0T EA888 Gen3 - 220 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2015,
+            "engines": [
+              {
+                "id": "golf-gti-2015-220hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 220,
+                "stockTorque": 350,
+                "label": "2015 Golf GTI 2.0T EA888 Gen3 - 220 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2016,
+            "engines": [
+              {
+                "id": "golf-gti-2016-220hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 220,
+                "stockTorque": 350,
+                "label": "2016 Golf GTI 2.0T EA888 Gen3 - 220 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              {
+                "id": "golf-gti-2017-230hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 230,
+                "stockTorque": 350,
+                "label": "2017 Golf GTI 2.0T EA888 Gen3b - 230 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2018,
+            "engines": [
+              {
+                "id": "golf-gti-2018-230hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 230,
+                "stockTorque": 350,
+                "label": "2018 Golf GTI 2.0T EA888 Gen3b - 230 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              {
+                "id": "golf-gti-2019-230hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 230,
+                "stockTorque": 350,
+                "label": "2019 Golf GTI 2.0T EA888 Gen3b - 230 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              {
+                "id": "golf-gti-2020-245hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 245,
+                "stockTorque": 370,
+                "label": "2020 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס"
+              },
+              {
+                "id": "golf-gti-2020-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2020 Golf GTI 2.0T EA888 Gen4 - 265 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              {
+                "id": "golf-gti-2021-245hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 245,
+                "stockTorque": 370,
+                "label": "2021 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס"
+              },
+              {
+                "id": "golf-gti-2021-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2021 Golf GTI 2.0T EA888 Gen4 - 265 כ\"ס"
+              }
+            ]
+          },
+          {
             "year": 2022,
             "engines": [
-              { "id": "vw-gti-ea888-2022", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 245, "stockTorque": 370, "label": "2022 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס" }
+              {
+                "id": "golf-gti-2022-245hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 245,
+                "stockTorque": 370,
+                "label": "2022 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס"
+              },
+              {
+                "id": "golf-gti-2022-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2022 Golf GTI 2.0T EA888 Gen4 - 265 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              {
+                "id": "golf-gti-2023-245hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 245,
+                "stockTorque": 370,
+                "label": "2023 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס"
+              },
+              {
+                "id": "golf-gti-2023-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2023 Golf GTI 2.0T EA888 Gen4 - 265 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2024,
+            "engines": [
+              {
+                "id": "golf-gti-2024-245hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 245,
+                "stockTorque": 370,
+                "label": "2024 Golf GTI 2.0T EA888 Gen4 - 245 כ\"ס"
+              },
+              {
+                "id": "golf-gti-2024-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2024 Golf GTI 2.0T EA888 Gen4 - 265 כ\"ס"
+              }
             ]
           }
         ]
@@ -20,9 +379,198 @@
         "name": "Golf R",
         "years": [
           {
+            "year": 2010,
+            "engines": [
+              {
+                "id": "golf-r-2010-270hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 270,
+                "stockTorque": 350,
+                "label": "2010 Golf R 2.0T EA113 - 270 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2011,
+            "engines": [
+              {
+                "id": "golf-r-2011-270hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 270,
+                "stockTorque": 350,
+                "label": "2011 Golf R 2.0T EA113 - 270 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2012,
+            "engines": [
+              {
+                "id": "golf-r-2012-270hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 270,
+                "stockTorque": 350,
+                "label": "2012 Golf R 2.0T EA113 - 270 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2013,
+            "engines": [
+              {
+                "id": "golf-r-2013-270hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 270,
+                "stockTorque": 350,
+                "label": "2013 Golf R 2.0T EA113 - 270 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2014,
+            "engines": [
+              {
+                "id": "golf-r-2014-300hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2014 Golf R 2.0T EA888 Gen3 - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2015,
+            "engines": [
+              {
+                "id": "golf-r-2015-300hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2015 Golf R 2.0T EA888 Gen3 - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2016,
+            "engines": [
+              {
+                "id": "golf-r-2016-300hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2016 Golf R 2.0T EA888 Gen3 - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              {
+                "id": "golf-r-2017-300hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2017 Golf R 2.0T EA888 Gen3 - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2018,
+            "engines": [
+              {
+                "id": "golf-r-2018-300hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2018 Golf R 2.0T EA888 Gen3 - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              {
+                "id": "golf-r-2019-310hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2019 Golf R 2.0T EA888 Gen3b - 310 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              {
+                "id": "golf-r-2020-310hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2020 Golf R 2.0T EA888 Gen3b - 310 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              {
+                "id": "golf-r-2021-320hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 420,
+                "label": "2021 Golf R 2.0T EA888 Gen4 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
             "year": 2022,
             "engines": [
-              { "id": "vw-r-ea888-2022", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 320, "stockTorque": 420, "label": "2022 Golf R 2.0T EA888 Gen4 - 320 כ\"ס" }
+              {
+                "id": "golf-r-2022-320hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 420,
+                "label": "2022 Golf R 2.0T EA888 Gen4 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              {
+                "id": "golf-r-2023-320hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 420,
+                "label": "2023 Golf R 2.0T EA888 Gen4 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2024,
+            "engines": [
+              {
+                "id": "golf-r-2024-320hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 420,
+                "label": "2024 Golf R 2.0T EA888 Gen4 - 320 כ\"ס"
+              }
             ]
           }
         ]
@@ -38,9 +586,312 @@
         "name": "Leon Cupra",
         "years": [
           {
+            "year": 2007,
+            "engines": [
+              {
+                "id": "leon-cupra-2007-240hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 240,
+                "stockTorque": 300,
+                "label": "2007 Leon Cupra 2.0T EA113 - 240 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2008,
+            "engines": [
+              {
+                "id": "leon-cupra-2008-240hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 240,
+                "stockTorque": 300,
+                "label": "2008 Leon Cupra 2.0T EA113 - 240 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2009,
+            "engines": [
+              {
+                "id": "leon-cupra-2009-240hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 240,
+                "stockTorque": 300,
+                "label": "2009 Leon Cupra 2.0T EA113 - 240 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2010,
+            "engines": [
+              {
+                "id": "leon-cupra-2010-240hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 240,
+                "stockTorque": 300,
+                "label": "2010 Leon Cupra 2.0T EA113 - 240 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2011,
+            "engines": [
+              {
+                "id": "leon-cupra-2011-240hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 240,
+                "stockTorque": 300,
+                "label": "2011 Leon Cupra 2.0T EA113 - 240 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2012,
+            "engines": [
+              {
+                "id": "leon-cupra-2012-240hp",
+                "code": "EA113",
+                "displacement": "2.0T",
+                "stockHp": 240,
+                "stockTorque": 300,
+                "label": "2012 Leon Cupra 2.0T EA113 - 240 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2013,
+            "engines": [
+              {
+                "id": "leon-cupra-2013-265hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 350,
+                "label": "2013 Leon Cupra 2.0T EA888 Gen3 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2013-280hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 280,
+                "stockTorque": 350,
+                "label": "2013 Leon Cupra 2.0T EA888 Gen3 - 280 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2014,
+            "engines": [
+              {
+                "id": "leon-cupra-2014-265hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 350,
+                "label": "2014 Leon Cupra 2.0T EA888 Gen3 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2014-280hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 280,
+                "stockTorque": 350,
+                "label": "2014 Leon Cupra 2.0T EA888 Gen3 - 280 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2015,
+            "engines": [
+              {
+                "id": "leon-cupra-2015-265hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 350,
+                "label": "2015 Leon Cupra 2.0T EA888 Gen3 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2015-280hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 280,
+                "stockTorque": 350,
+                "label": "2015 Leon Cupra 2.0T EA888 Gen3 - 280 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2016,
+            "engines": [
+              {
+                "id": "leon-cupra-2016-265hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 350,
+                "label": "2016 Leon Cupra 2.0T EA888 Gen3 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2016-280hp",
+                "code": "EA888 Gen3",
+                "displacement": "2.0T",
+                "stockHp": 280,
+                "stockTorque": 350,
+                "label": "2016 Leon Cupra 2.0T EA888 Gen3 - 280 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              {
+                "id": "leon-cupra-2017-290hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 290,
+                "stockTorque": 350,
+                "label": "2017 Leon Cupra 2.0T EA888 Gen3b - 290 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2017-300hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2017 Leon Cupra 2.0T EA888 Gen3b - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2018,
+            "engines": [
+              {
+                "id": "leon-cupra-2018-290hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 290,
+                "stockTorque": 350,
+                "label": "2018 Leon Cupra 2.0T EA888 Gen3b - 290 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2018-300hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2018 Leon Cupra 2.0T EA888 Gen3b - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              {
+                "id": "leon-cupra-2019-290hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 290,
+                "stockTorque": 350,
+                "label": "2019 Leon Cupra 2.0T EA888 Gen3b - 290 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2019-300hp",
+                "code": "EA888 Gen3b",
+                "displacement": "2.0T",
+                "stockHp": 300,
+                "stockTorque": 380,
+                "label": "2019 Leon Cupra 2.0T EA888 Gen3b - 300 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              {
+                "id": "leon-cupra-2020-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2020 Leon Cupra 2.0T EA888 Gen4 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2020-310hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2020 Leon Cupra 2.0T EA888 Gen4 - 310 כ\"ס"
+              }
+            ]
+          },
+          {
             "year": 2021,
             "engines": [
-              { "id": "seat-cupra-ea888-2021", "code": "EA888 Gen4", "displacement": "2.0T", "stockHp": 310, "stockTorque": 400, "label": "2021 Leon Cupra 2.0T EA888 Gen4 - 310 כ\"ס" }
+              {
+                "id": "leon-cupra-2021-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2021 Leon Cupra 2.0T EA888 Gen4 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2021-310hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2021 Leon Cupra 2.0T EA888 Gen4 - 310 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              {
+                "id": "leon-cupra-2022-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2022 Leon Cupra 2.0T EA888 Gen4 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2022-310hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2022 Leon Cupra 2.0T EA888 Gen4 - 310 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              {
+                "id": "leon-cupra-2023-265hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 265,
+                "stockTorque": 370,
+                "label": "2023 Leon Cupra 2.0T EA888 Gen4 - 265 כ\"ס"
+              },
+              {
+                "id": "leon-cupra-2023-310hp",
+                "code": "EA888 Gen4",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2023 Leon Cupra 2.0T EA888 Gen4 - 310 כ\"ס"
+              }
             ]
           }
         ]
@@ -56,9 +907,185 @@
         "name": "Civic Type R",
         "years": [
           {
+            "year": 2007,
+            "engines": [
+              {
+                "id": "civic-type-r-2007-201hp",
+                "code": "K20A",
+                "displacement": "2.0 NA",
+                "stockHp": 201,
+                "stockTorque": 193,
+                "label": "2007 Civic Type R 2.0 NA K20A - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2008,
+            "engines": [
+              {
+                "id": "civic-type-r-2008-201hp",
+                "code": "K20A",
+                "displacement": "2.0 NA",
+                "stockHp": 201,
+                "stockTorque": 193,
+                "label": "2008 Civic Type R 2.0 NA K20A - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2009,
+            "engines": [
+              {
+                "id": "civic-type-r-2009-201hp",
+                "code": "K20A",
+                "displacement": "2.0 NA",
+                "stockHp": 201,
+                "stockTorque": 193,
+                "label": "2009 Civic Type R 2.0 NA K20A - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2010,
+            "engines": [
+              {
+                "id": "civic-type-r-2010-201hp",
+                "code": "K20A",
+                "displacement": "2.0 NA",
+                "stockHp": 201,
+                "stockTorque": 193,
+                "label": "2010 Civic Type R 2.0 NA K20A - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2015,
+            "engines": [
+              {
+                "id": "civic-type-r-2015-310hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2015 Civic Type R 2.0T K20C1 - 310 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2016,
+            "engines": [
+              {
+                "id": "civic-type-r-2016-310hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 310,
+                "stockTorque": 400,
+                "label": "2016 Civic Type R 2.0T K20C1 - 310 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              {
+                "id": "civic-type-r-2017-320hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 400,
+                "label": "2017 Civic Type R 2.0T K20C1 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2018,
+            "engines": [
+              {
+                "id": "civic-type-r-2018-320hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 400,
+                "label": "2018 Civic Type R 2.0T K20C1 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              {
+                "id": "civic-type-r-2019-320hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 400,
+                "label": "2019 Civic Type R 2.0T K20C1 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              {
+                "id": "civic-type-r-2020-320hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 400,
+                "label": "2020 Civic Type R 2.0T K20C1 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              {
+                "id": "civic-type-r-2021-320hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 320,
+                "stockTorque": 400,
+                "label": "2021 Civic Type R 2.0T K20C1 - 320 כ\"ס"
+              }
+            ]
+          },
+          {
             "year": 2022,
             "engines": [
-              { "id": "honda-ctr-k20c1-2022", "code": "K20C1", "displacement": "2.0T", "stockHp": 316, "stockTorque": 400, "label": "2022 Civic Type R 2.0T K20C1 - 316 כ\"ס" }
+              {
+                "id": "civic-type-r-2022-329hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 329,
+                "stockTorque": 420,
+                "label": "2022 Civic Type R 2.0T K20C1 - 329 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              {
+                "id": "civic-type-r-2023-329hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 329,
+                "stockTorque": 420,
+                "label": "2023 Civic Type R 2.0T K20C1 - 329 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2024,
+            "engines": [
+              {
+                "id": "civic-type-r-2024-329hp",
+                "code": "K20C1",
+                "displacement": "2.0T",
+                "stockHp": 329,
+                "stockTorque": 420,
+                "label": "2024 Civic Type R 2.0T K20C1 - 329 כ\"ס"
+              }
             ]
           }
         ]
@@ -68,9 +1095,237 @@
         "name": "Civic Si",
         "years": [
           {
+            "year": 2006,
+            "engines": [
+              {
+                "id": "civic-si-2006-197hp",
+                "code": "K20Z3",
+                "displacement": "2.0 NA",
+                "stockHp": 197,
+                "stockTorque": 188,
+                "label": "2006 Civic Si 2.0 NA K20Z3 - 197 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2007,
+            "engines": [
+              {
+                "id": "civic-si-2007-197hp",
+                "code": "K20Z3",
+                "displacement": "2.0 NA",
+                "stockHp": 197,
+                "stockTorque": 188,
+                "label": "2007 Civic Si 2.0 NA K20Z3 - 197 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2008,
+            "engines": [
+              {
+                "id": "civic-si-2008-197hp",
+                "code": "K20Z3",
+                "displacement": "2.0 NA",
+                "stockHp": 197,
+                "stockTorque": 188,
+                "label": "2008 Civic Si 2.0 NA K20Z3 - 197 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2009,
+            "engines": [
+              {
+                "id": "civic-si-2009-197hp",
+                "code": "K20Z3",
+                "displacement": "2.0 NA",
+                "stockHp": 197,
+                "stockTorque": 188,
+                "label": "2009 Civic Si 2.0 NA K20Z3 - 197 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2010,
+            "engines": [
+              {
+                "id": "civic-si-2010-197hp",
+                "code": "K20Z3",
+                "displacement": "2.0 NA",
+                "stockHp": 197,
+                "stockTorque": 188,
+                "label": "2010 Civic Si 2.0 NA K20Z3 - 197 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2011,
+            "engines": [
+              {
+                "id": "civic-si-2011-197hp",
+                "code": "K20Z3",
+                "displacement": "2.0 NA",
+                "stockHp": 197,
+                "stockTorque": 188,
+                "label": "2011 Civic Si 2.0 NA K20Z3 - 197 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2012,
+            "engines": [
+              {
+                "id": "civic-si-2012-201hp",
+                "code": "K24Z7",
+                "displacement": "2.4 NA",
+                "stockHp": 201,
+                "stockTorque": 232,
+                "label": "2012 Civic Si 2.4 NA K24Z7 - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2013,
+            "engines": [
+              {
+                "id": "civic-si-2013-201hp",
+                "code": "K24Z7",
+                "displacement": "2.4 NA",
+                "stockHp": 201,
+                "stockTorque": 232,
+                "label": "2013 Civic Si 2.4 NA K24Z7 - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2014,
+            "engines": [
+              {
+                "id": "civic-si-2014-201hp",
+                "code": "K24Z7",
+                "displacement": "2.4 NA",
+                "stockHp": 201,
+                "stockTorque": 232,
+                "label": "2014 Civic Si 2.4 NA K24Z7 - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2015,
+            "engines": [
+              {
+                "id": "civic-si-2015-201hp",
+                "code": "K24Z7",
+                "displacement": "2.4 NA",
+                "stockHp": 201,
+                "stockTorque": 232,
+                "label": "2015 Civic Si 2.4 NA K24Z7 - 201 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              {
+                "id": "civic-si-2017-205hp",
+                "code": "L15B7",
+                "displacement": "1.5T",
+                "stockHp": 205,
+                "stockTorque": 260,
+                "label": "2017 Civic Si 1.5T L15B7 - 205 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2018,
+            "engines": [
+              {
+                "id": "civic-si-2018-205hp",
+                "code": "L15B7",
+                "displacement": "1.5T",
+                "stockHp": 205,
+                "stockTorque": 260,
+                "label": "2018 Civic Si 1.5T L15B7 - 205 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              {
+                "id": "civic-si-2019-205hp",
+                "code": "L15B7",
+                "displacement": "1.5T",
+                "stockHp": 205,
+                "stockTorque": 260,
+                "label": "2019 Civic Si 1.5T L15B7 - 205 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              {
+                "id": "civic-si-2020-205hp",
+                "code": "L15B7",
+                "displacement": "1.5T",
+                "stockHp": 205,
+                "stockTorque": 260,
+                "label": "2020 Civic Si 1.5T L15B7 - 205 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              {
+                "id": "civic-si-2021-205hp",
+                "code": "L15B7",
+                "displacement": "1.5T",
+                "stockHp": 205,
+                "stockTorque": 260,
+                "label": "2021 Civic Si 1.5T L15B7 - 205 כ\"ס"
+              }
+            ]
+          },
+          {
             "year": 2022,
             "engines": [
-              { "id": "honda-si-l15b7-2022", "code": "L15B7", "displacement": "1.5T", "stockHp": 200, "stockTorque": 260, "label": "2022 Civic Si 1.5T L15B7 - 200 כ\"ס" }
+              {
+                "id": "civic-si-2022-200hp",
+                "code": "L15CA",
+                "displacement": "1.5T",
+                "stockHp": 200,
+                "stockTorque": 260,
+                "label": "2022 Civic Si 1.5T L15CA - 200 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              {
+                "id": "civic-si-2023-200hp",
+                "code": "L15CA",
+                "displacement": "1.5T",
+                "stockHp": 200,
+                "stockTorque": 260,
+                "label": "2023 Civic Si 1.5T L15CA - 200 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2024,
+            "engines": [
+              {
+                "id": "civic-si-2024-200hp",
+                "code": "L15CA",
+                "displacement": "1.5T",
+                "stockHp": 200,
+                "stockTorque": 260,
+                "label": "2024 Civic Si 1.5T L15CA - 200 כ\"ס"
+              }
             ]
           }
         ]
@@ -86,99 +1341,360 @@
         "name": "i30",
         "years": [
           {
-            "year": 2023,
+            "year": 2007,
             "engines": [
-              { "id": "hyundai-i30-g4fj-2023", "code": "G4FJ", "displacement": "1.4T", "stockHp": 140, "stockTorque": 242, "label": "2023 i30 1.4T G4FJ - 140 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2022,
-            "engines": [
-              { "id": "hyundai-i30-g4fj-2022", "code": "G4FJ", "displacement": "1.4T", "stockHp": 140, "stockTorque": 242, "label": "2022 i30 1.4T G4FJ - 140 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2021,
-            "engines": [
-              { "id": "hyundai-i30-g4fj-2021", "code": "G4FJ", "displacement": "1.4T", "stockHp": 140, "stockTorque": 242, "label": "2021 i30 1.4T G4FJ - 140 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2020,
-            "engines": [
-              { "id": "hyundai-i30-g4fj-2020", "code": "G4FJ", "displacement": "1.4T", "stockHp": 140, "stockTorque": 242, "label": "2020 i30 1.4T G4FJ - 140 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2019,
-            "engines": [
-              { "id": "hyundai-i30-g4fj-2019", "code": "G4FJ", "displacement": "1.4T", "stockHp": 140, "stockTorque": 242, "label": "2019 i30 1.4T G4FJ - 140 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2018,
-            "engines": [
-              { "id": "hyundai-i30-g4fj-2018", "code": "G4FJ", "displacement": "1.4T", "stockHp": 140, "stockTorque": 242, "label": "2018 i30 1.4T G4FJ - 140 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2017,
-            "engines": [
-              { "id": "hyundai-i30-g4fj-2017", "code": "G4FJ", "displacement": "1.4T", "stockHp": 140, "stockTorque": 242, "label": "2017 i30 1.4T G4FJ - 140 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2016,
-            "engines": [
-              { "id": "hyundai-i30-g4fd-2016", "code": "G4FD", "displacement": "1.6", "stockHp": 135, "stockTorque": 164, "label": "2016 i30 1.6 GDI G4FD - 135 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2015,
-            "engines": [
-              { "id": "hyundai-i30-g4fd-2015", "code": "G4FD", "displacement": "1.6", "stockHp": 135, "stockTorque": 164, "label": "2015 i30 1.6 GDI G4FD - 135 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2014,
-            "engines": [
-              { "id": "hyundai-i30-g4fd-2014", "code": "G4FD", "displacement": "1.6", "stockHp": 135, "stockTorque": 164, "label": "2014 i30 1.6 GDI G4FD - 135 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2013,
-            "engines": [
-              { "id": "hyundai-i30-g4fd-2013", "code": "G4FD", "displacement": "1.6", "stockHp": 135, "stockTorque": 164, "label": "2013 i30 1.6 GDI G4FD - 135 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2012,
-            "engines": [
-              { "id": "hyundai-i30-g4fd-2012", "code": "G4FD", "displacement": "1.6", "stockHp": 135, "stockTorque": 164, "label": "2012 i30 1.6 GDI G4FD - 135 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2011,
-            "engines": [
-              { "id": "hyundai-i30-g4fc-2011", "code": "G4FC", "displacement": "1.6", "stockHp": 122, "stockTorque": 156, "label": "2011 i30 1.6 MPI G4FC - 122 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2010,
-            "engines": [
-              { "id": "hyundai-i30-g4fc-2010", "code": "G4FC", "displacement": "1.6", "stockHp": 122, "stockTorque": 156, "label": "2010 i30 1.6 MPI G4FC - 122 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2009,
-            "engines": [
-              { "id": "hyundai-i30-g4fc-2009", "code": "G4FC", "displacement": "1.6", "stockHp": 122, "stockTorque": 156, "label": "2009 i30 1.6 MPI G4FC - 122 כ\"ס" }
+              {
+                "id": "i30-2007-122hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 122,
+                "stockTorque": 154,
+                "label": "2007 i30 1.6 NA G4FC - 122 כ\"ס"
+              },
+              {
+                "id": "i30-2007-143hp",
+                "code": "G4GC",
+                "displacement": "2.0 NA",
+                "stockHp": 143,
+                "stockTorque": 186,
+                "label": "2007 i30 2.0 NA G4GC - 143 כ\"ס"
+              }
             ]
           },
           {
             "year": 2008,
             "engines": [
-              { "id": "hyundai-i30-g4fc-2008", "code": "G4FC", "displacement": "1.6", "stockHp": 122, "stockTorque": 156, "label": "2008 i30 1.6 MPI G4FC - 122 כ\"ס" }
+              {
+                "id": "i30-2008-122hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 122,
+                "stockTorque": 154,
+                "label": "2008 i30 1.6 NA G4FC - 122 כ\"ס"
+              },
+              {
+                "id": "i30-2008-143hp",
+                "code": "G4GC",
+                "displacement": "2.0 NA",
+                "stockHp": 143,
+                "stockTorque": 186,
+                "label": "2008 i30 2.0 NA G4GC - 143 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2009,
+            "engines": [
+              {
+                "id": "i30-2009-122hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 122,
+                "stockTorque": 154,
+                "label": "2009 i30 1.6 NA G4FC - 122 כ\"ס"
+              },
+              {
+                "id": "i30-2009-143hp",
+                "code": "G4GC",
+                "displacement": "2.0 NA",
+                "stockHp": 143,
+                "stockTorque": 186,
+                "label": "2009 i30 2.0 NA G4GC - 143 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2010,
+            "engines": [
+              {
+                "id": "i30-2010-122hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 122,
+                "stockTorque": 154,
+                "label": "2010 i30 1.6 NA G4FC - 122 כ\"ס"
+              },
+              {
+                "id": "i30-2010-143hp",
+                "code": "G4GC",
+                "displacement": "2.0 NA",
+                "stockHp": 143,
+                "stockTorque": 186,
+                "label": "2010 i30 2.0 NA G4GC - 143 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2011,
+            "engines": [
+              {
+                "id": "i30-2011-122hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 122,
+                "stockTorque": 154,
+                "label": "2011 i30 1.6 NA G4FC - 122 כ\"ס"
+              },
+              {
+                "id": "i30-2011-143hp",
+                "code": "G4GC",
+                "displacement": "2.0 NA",
+                "stockHp": 143,
+                "stockTorque": 186,
+                "label": "2011 i30 2.0 NA G4GC - 143 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2012,
+            "engines": [
+              {
+                "id": "i30-2012-120hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 120,
+                "stockTorque": 156,
+                "label": "2012 i30 1.6 NA G4FC - 120 כ\"ס"
+              },
+              {
+                "id": "i30-2012-186hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 186,
+                "stockTorque": 265,
+                "label": "2012 i30 1.6T G4FJ - 186 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2013,
+            "engines": [
+              {
+                "id": "i30-2013-120hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 120,
+                "stockTorque": 156,
+                "label": "2013 i30 1.6 NA G4FC - 120 כ\"ס"
+              },
+              {
+                "id": "i30-2013-186hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 186,
+                "stockTorque": 265,
+                "label": "2013 i30 1.6T G4FJ - 186 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2014,
+            "engines": [
+              {
+                "id": "i30-2014-120hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 120,
+                "stockTorque": 156,
+                "label": "2014 i30 1.6 NA G4FC - 120 כ\"ס"
+              },
+              {
+                "id": "i30-2014-186hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 186,
+                "stockTorque": 265,
+                "label": "2014 i30 1.6T G4FJ - 186 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2015,
+            "engines": [
+              {
+                "id": "i30-2015-120hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 120,
+                "stockTorque": 156,
+                "label": "2015 i30 1.6 NA G4FC - 120 כ\"ס"
+              },
+              {
+                "id": "i30-2015-186hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 186,
+                "stockTorque": 265,
+                "label": "2015 i30 1.6T G4FJ - 186 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2016,
+            "engines": [
+              {
+                "id": "i30-2016-120hp",
+                "code": "G4FC",
+                "displacement": "1.6 NA",
+                "stockHp": 120,
+                "stockTorque": 156,
+                "label": "2016 i30 1.6 NA G4FC - 120 כ\"ס"
+              },
+              {
+                "id": "i30-2016-186hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 186,
+                "stockTorque": 265,
+                "label": "2016 i30 1.6T G4FJ - 186 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2017,
+            "engines": [
+              {
+                "id": "i30-2017-140hp",
+                "code": "G4LC",
+                "displacement": "1.4T",
+                "stockHp": 140,
+                "stockTorque": 242,
+                "label": "2017 i30 1.4T G4LC - 140 כ\"ס"
+              },
+              {
+                "id": "i30-2017-204hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 204,
+                "stockTorque": 265,
+                "label": "2017 i30 1.6T G4FJ - 204 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2018,
+            "engines": [
+              {
+                "id": "i30-2018-140hp",
+                "code": "G4LC",
+                "displacement": "1.4T",
+                "stockHp": 140,
+                "stockTorque": 242,
+                "label": "2018 i30 1.4T G4LC - 140 כ\"ס"
+              },
+              {
+                "id": "i30-2018-204hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 204,
+                "stockTorque": 265,
+                "label": "2018 i30 1.6T G4FJ - 204 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2019,
+            "engines": [
+              {
+                "id": "i30-2019-140hp",
+                "code": "G4LC",
+                "displacement": "1.4T",
+                "stockHp": 140,
+                "stockTorque": 242,
+                "label": "2019 i30 1.4T G4LC - 140 כ\"ס"
+              },
+              {
+                "id": "i30-2019-204hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 204,
+                "stockTorque": 265,
+                "label": "2019 i30 1.6T G4FJ - 204 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2020,
+            "engines": [
+              {
+                "id": "i30-2020-140hp",
+                "code": "G4LC",
+                "displacement": "1.4T",
+                "stockHp": 140,
+                "stockTorque": 242,
+                "label": "2020 i30 1.4T G4LC - 140 כ\"ס"
+              },
+              {
+                "id": "i30-2020-204hp",
+                "code": "G4FJ",
+                "displacement": "1.6T",
+                "stockHp": 204,
+                "stockTorque": 265,
+                "label": "2020 i30 1.6T G4FJ - 204 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2021,
+            "engines": [
+              {
+                "id": "i30-2021-160hp",
+                "code": "G4FY",
+                "displacement": "1.5T",
+                "stockHp": 160,
+                "stockTorque": 253,
+                "label": "2021 i30 1.5T G4FY - 160 כ\"ס"
+              },
+              {
+                "id": "i30-2021-204hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 204,
+                "stockTorque": 265,
+                "label": "2021 i30 2.0T G4KH - 204 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              {
+                "id": "i30-2022-160hp",
+                "code": "G4FY",
+                "displacement": "1.5T",
+                "stockHp": 160,
+                "stockTorque": 253,
+                "label": "2022 i30 1.5T G4FY - 160 כ\"ס"
+              },
+              {
+                "id": "i30-2022-204hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 204,
+                "stockTorque": 265,
+                "label": "2022 i30 2.0T G4KH - 204 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              {
+                "id": "i30-2023-160hp",
+                "code": "G4FY",
+                "displacement": "1.5T",
+                "stockHp": 160,
+                "stockTorque": 253,
+                "label": "2023 i30 1.5T G4FY - 160 כ\"ס"
+              },
+              {
+                "id": "i30-2023-204hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 204,
+                "stockTorque": 265,
+                "label": "2023 i30 2.0T G4KH - 204 כ\"ס"
+              }
             ]
           }
         ]
@@ -188,27 +1704,68 @@
         "name": "Veloster N",
         "years": [
           {
-            "year": 2022,
+            "year": 2019,
             "engines": [
-              { "id": "hyundai-velostern-g4kh-2022", "code": "G4KH", "displacement": "2.0T", "stockHp": 275, "stockTorque": 378, "label": "2022 Veloster N 2.0T G4KH - 275 כ\"ס" }
-            ]
-          },
-          {
-            "year": 2021,
-            "engines": [
-              { "id": "hyundai-velostern-g4kh-2021", "code": "G4KH", "displacement": "2.0T", "stockHp": 250, "stockTorque": 353, "label": "2021 Veloster N 2.0T G4KH - 250 כ\"ס" }
+              {
+                "id": "veloster-n-2019-250hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 250,
+                "stockTorque": 353,
+                "label": "2019 Veloster N 2.0T G4KH - 250 כ\"ס"
+              }
             ]
           },
           {
             "year": 2020,
             "engines": [
-              { "id": "hyundai-velostern-g4kh-2020", "code": "G4KH", "displacement": "2.0T", "stockHp": 275, "stockTorque": 378, "label": "2020 Veloster N 2.0T G4KH Performance - 275 כ\"ס" }
+              {
+                "id": "veloster-n-2020-250hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 250,
+                "stockTorque": 353,
+                "label": "2020 Veloster N 2.0T G4KH - 250 כ\"ס"
+              }
             ]
           },
           {
-            "year": 2019,
+            "year": 2021,
             "engines": [
-              { "id": "hyundai-velostern-g4kh-2019", "code": "G4KH", "displacement": "2.0T", "stockHp": 250, "stockTorque": 353, "label": "2019 Veloster N 2.0T G4KH - 250 כ\"ס" }
+              {
+                "id": "veloster-n-2021-250hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 250,
+                "stockTorque": 353,
+                "label": "2021 Veloster N 2.0T G4KH - 250 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2022,
+            "engines": [
+              {
+                "id": "veloster-n-2022-275hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 275,
+                "stockTorque": 378,
+                "label": "2022 Veloster N 2.0T G4KH - 275 כ\"ס"
+              }
+            ]
+          },
+          {
+            "year": 2023,
+            "engines": [
+              {
+                "id": "veloster-n-2023-275hp",
+                "code": "G4KH",
+                "displacement": "2.0T",
+                "stockHp": 275,
+                "stockTorque": 378,
+                "label": "2023 Veloster N 2.0T G4KH - 275 כ\"ס"
+              }
             ]
           }
         ]

@@ -1,4 +1,14 @@
-﻿export default function UserProfilePage() {
+﻿import { useGarage } from '../context/GarageContext';
+
+export default function UserProfilePage() {
+  const { userParts } = useGarage();
+
+  // Real garage stats, derived straight from the garage context.
+  const installed   = userParts.filter(p => p.status === 'installed');
+  const plannedCount = userParts.filter(p => p.status === 'planned').length;
+  const hpAdded     = installed.reduce((sum, p) => sum + (p.hpGain     || 0), 0);
+  const nmAdded     = installed.reduce((sum, p) => sum + (p.torqueGain || 0), 0);
+
   return (
     <main className="pt-20 md:pt-8 md:pr-72 px-container-margin pb-24 md:pb-xl min-h-screen">
       <div className="max-w-3xl mx-auto space-y-xl">
@@ -40,9 +50,9 @@
           </div>
           <div className="grid grid-cols-3 gap-sm text-center border-t border-[#2D2D2D] pt-md">
             {[
-              { label: 'גישה לכל הקטגוריות', icon: 'category' },
-              { label: 'מעקב ביצועים חי',    icon: 'monitoring' },
-              { label: 'גראז\' ללא הגבלה',    icon: 'garage' },
+              { label: 'גראז\' מלא ללא הגבלה', icon: 'garage' },
+              { label: 'גיבוי אוטומטי לענן',   icon: 'cloud_upload' },
+              { label: 'מעקב ביצועים חי',      icon: 'monitoring' },
             ].map(({ label, icon }) => (
               <div key={label} className="flex flex-col items-center gap-xs text-secondary">
                 <span className="material-symbols-outlined text-primary-container text-[22px]">{icon}</span>
@@ -87,10 +97,10 @@
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-sm">
             {[
-              { value: '7',    label: 'חלקים מותקנים', icon: 'build_circle'  },
-              { value: '3',    label: 'שיפורים מתוכננים', icon: 'schedule'   },
-              { value: '+142', label: 'כ"ס נוספו',      icon: 'bolt'         },
-              { value: '+210', label: 'Nm נוספו',        icon: 'compress'     },
+              { value: String(installed.length), label: 'חלקים מותקנים',    icon: 'build_circle' },
+              { value: String(plannedCount),     label: 'שיפורים מתוכננים', icon: 'schedule'     },
+              { value: `+${hpAdded}`,            label: 'כ"ס נוספו',         icon: 'bolt'         },
+              { value: `+${nmAdded}`,            label: 'Nm נוספו',          icon: 'compress'     },
             ].map(({ value, label, icon }) => (
               <div key={label} className="bg-[#1E1E1E] border border-[#2D2D2D] rounded-lg p-md text-center space-y-xs">
                 <span className="material-symbols-outlined text-primary-container text-[28px]">{icon}</span>

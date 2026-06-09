@@ -1,8 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import carsData from '../data/cars.json';
+import HelpHint from '../components/HelpHint';
 import { useVehicle } from '../context/VehicleContext';
 import { useGarage } from '../context/GarageContext';
+import { useAuth } from '../context/AuthContext';
+import {
+  fetchRecentVehicles,
+  saveRecentVehicle,
+  deleteRecentVehicle,
+  setDefaultVehicle,
+  rowToVehicle,
+} from '../lib/recentVehicles';
 
 // Local model photos (downloaded from Wikimedia Commons → public/images/vehicles/),
 // keyed by model id in cars.json. Served from the app root by Vite.
@@ -17,13 +26,56 @@ export const MODEL_IMAGES = {
   'i30':          '/images/vehicles/i30.jpg',
 };
 
+const ENGINE_HELP =
+`איפה מוצאים את קוד המנוע?
+📄 בתעודת הרכב — שדה 'סוג מנוע'
+🔧 על גבי המנוע עצמו — מדבקה או חריטה
+💻 באתר משרד התחבורה — חיפוש לפי מספר רכב
+לדוגמה: EA888, K20C1, G4KH`;
+
+const YEAR_HELP =
+`שנת ייצור vs. שנת רכישה
+📅 שנת הייצור היא השנה שבה הרכב יוצר במפעל
+🚗 שנת הרכישה יכולה להיות שנה מאוחרת יותר
+📄 מצא בתעודת הרכב — שדה 'שנת ייצור'
+⚠️ לא שנת הרישום!`;
+
 export default function VehicleSelectionPage() {
   const navigate = useNavigate();
   const { selectedVehicle, setSelectedVehicle } = useVehicle();
   const { clearGarage } = useGarage();
+  const { user } = useAuth();
 
   // Entry tabs: 'manual' (הזנה ידנית, default — what the user sees first) | 'plate' (לוחית רישוי)
   const [entryTab, setEntryTab] = useState('manual');
+
+  // Recent vehicles (Supabase-backed, signed-in users only).
+  const [recent, setRecent] = useState([]);
+  const [autoSelected, setAutoSelected] = useState(false);
+
+  const loadRecent = useCallback(async () => {
+    if (!user) { setRecent([]); return []; }
+    const rows = await fetchRecentVehicles(user.id);
+    setRecent(rows);
+    return rows;
+  }, [user]);
+
+  // On entering the page (signed in): load history and auto-select the default.
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+    (async () => {
+      const rows = await loadRecent();
+      if (!active) return;
+      const def = rows.find(r => r.is_default);
+      if (def && !autoSelected && !selectedVehicle) {
+        setSelectedVehicle(rowToVehicle(def));
+        setAutoSelected(true);
+      }
+    })();
+    return () => { active = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, loadRecent]);
 
   const [selectedMake,   setSelectedMake]   = useState('');
   const [selectedModel,  setSelectedModel]  = useState('');
@@ -57,22 +109,48 @@ export default function VehicleSelectionPage() {
 
   const isFormComplete = selectedMake && selectedModel && selectedYear && selectedEngine;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const engine     = availableEngines.find(e => e.id === selectedEngine);
     const isNewVehicle = !selectedVehicle ||
       selectedVehicle.engine.id !== engine.id;
 
     if (isNewVehicle) clearGarage();
 
-    setSelectedVehicle({
+    const vehicle = {
       makeId:    currentMake.id,
       makeName:  currentMake.make,
       modelId:   currentModel.id,
       modelName: currentModel.name,
       year:      Number(selectedYear),
       engine,
-    });
+    };
+    setSelectedVehicle(vehicle);
+    // Remember this car for the signed-in user (non-blocking failures).
+    if (user) { try { await saveRecentVehicle(user.id, vehicle); } catch { /* ignore */ } }
     navigate('/catalog');
+  };
+
+  // Pick a recent platform → set it active, bump its recency, go to the catalog.
+  const handleSelectRecent = async (vehicle) => {
+    const isNewVehicle = !selectedVehicle || selectedVehicle.engine.id !== vehicle.engine.id;
+    if (isNewVehicle) clearGarage();
+    setSelectedVehicle(vehicle);
+    if (user) { try { await saveRecentVehicle(user.id, vehicle); } catch { /* ignore */ } }
+    navigate('/catalog');
+  };
+
+  // Remove a recent vehicle (with confirmation).
+  const handleDeleteRecent = async (row) => {
+    const label = `${row.year} ${row.model_name}`;
+    if (!window.confirm(`האם להסיר את ${label}?`)) return;
+    setRecent(prev => prev.filter(r => r.engine_id !== row.engine_id));
+    if (user) await deleteRecentVehicle(user.id, row.engine_id);
+  };
+
+  // Mark a recent vehicle as the default platform.
+  const handleSetDefault = async (row) => {
+    setRecent(prev => prev.map(r => ({ ...r, is_default: r.engine_id === row.engine_id })));
+    if (user) { await setDefaultVehicle(user.id, row.engine_id); await loadRecent(); }
   };
 
   const selectClass =
@@ -94,6 +172,14 @@ export default function VehicleSelectionPage() {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto space-y-lg">
+
+        {/* Intro block */}
+        <div className="text-center space-y-2 mb-lg">
+          <h1 className="font-h1 text-h1 font-bold text-white">בחר את הרכב שלך</h1>
+          <p className="font-body-lg text-body-lg text-[#C8C6C5] max-w-2xl mx-auto">
+            WrenchLogic מותאמת אישית לפי הרכב שלך — בחר יצרן, דגם ושנה כדי לראות רק חלפים שמתאימים לך.
+          </p>
+        </div>
 
         {/* Page Header */}
         <header className="mb-xl text-right">
@@ -167,7 +253,7 @@ export default function VehicleSelectionPage() {
                 חפש
               </button>
               <div role="status" className="w-full max-w-sm flex items-center justify-center gap-2 bg-[#FF6B00]/10 border border-[#FF6B00]/40 text-[#FF6B00] rounded-md py-3 px-4 font-body-md text-body-md text-center">
-                🚧 חיפוש לפי לוחית רישוי — בבנייה. בקרוב!
+                חיפוש לפי לוחית רישוי יהיה זמין בקרוב
               </div>
               <p className="text-xs text-secondary text-center">* הזנה ידנית זמינה כעת</p>
             </div>
@@ -176,6 +262,45 @@ export default function VehicleSelectionPage() {
           {/* ── Tab B: Vehicle Details (existing form) ──────── */}
           {entryTab === 'manual' && (
             <>
+              {/* 4-step progress bar — updates live as the user selects */}
+              {(() => {
+                const steps = [
+                  { label: 'יצרן', done: !!selectedMake },
+                  { label: 'דגם',  done: !!selectedModel },
+                  { label: 'שנה',  done: !!selectedYear },
+                  { label: 'מנוע', done: !!selectedEngine },
+                ];
+                const currentIdx = steps.findIndex(s => !s.done);
+                return (
+                  <div className="flex flex-row-reverse items-center justify-between mb-8 px-1">
+                    {steps.map((s, i) => {
+                      const isCurrent = i === currentIdx;
+                      return (
+                        <Fragment key={s.label}>
+                          <div className="flex flex-col items-center gap-1 shrink-0">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-colors ${
+                              s.done
+                                ? 'bg-primary-container border-primary-container text-[#121212]'
+                                : isCurrent
+                                  ? 'border-primary-container text-primary-container bg-transparent'
+                                  : 'border-[#2D2D2D] text-secondary bg-transparent'
+                            }`}>
+                              {s.done ? '✓' : i + 1}
+                            </div>
+                            <span className={`font-label-caps text-[11px] ${s.done || isCurrent ? 'text-primary-container' : 'text-secondary'}`}>
+                              {s.label}
+                            </span>
+                          </div>
+                          {i < steps.length - 1 && (
+                            <div className={`flex-1 h-0.5 mx-1 mb-5 transition-colors ${s.done ? 'bg-primary-container' : 'bg-[#2D2D2D]'}`} />
+                          )}
+                        </Fragment>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+
               {/* 4-Step Cascading Dropdowns */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
 
@@ -209,7 +334,10 @@ export default function VehicleSelectionPage() {
 
                 {/* 3 – Year */}
                 <div className="flex flex-col gap-1">
-                  <label className="font-label-caps text-label-caps text-secondary">שנה (Year)</label>
+                  <div className="flex items-center gap-1">
+                    <label className="font-label-caps text-label-caps text-secondary">שנה (Year)</label>
+                    <HelpHint text={YEAR_HELP} label="עזרה: שנת ייצור" />
+                  </div>
                   <div className="relative">
                     <select className={selectClass} dir="rtl" value={selectedYear} onChange={handleYearChange} disabled={!selectedModel}>
                       <option value="" disabled>בחר שנה (Select Year)</option>
@@ -223,12 +351,17 @@ export default function VehicleSelectionPage() {
 
                 {/* 4 – Engine */}
                 <div className="flex flex-col gap-1">
-                  <label className="font-label-caps text-label-caps text-secondary">קוד מנוע (Engine)</label>
+                  <div className="flex items-center gap-1">
+                    <label className="font-label-caps text-label-caps text-secondary">קוד מנוע (Engine)</label>
+                    <HelpHint text={ENGINE_HELP} label="עזרה: קוד מנוע" />
+                  </div>
                   <div className="relative">
                     <select className={selectClass} dir="rtl" value={selectedEngine} onChange={(e) => setSelectedEngine(e.target.value)} disabled={!selectedYear}>
                       <option value="" disabled>בחר מנוע (Select Engine)</option>
                       {availableEngines.map(engine => (
-                        <option key={engine.id} value={engine.id}>{engine.label}</option>
+                        <option key={engine.id} value={engine.id}>
+                          {`${engine.code} — ${engine.displacement} (${engine.stockHp} כ"ס)`}
+                        </option>
                       ))}
                     </select>
                     <span className="material-symbols-outlined absolute left-3 top-3 text-[#474747] pointer-events-none">arrow_drop_down</span>
@@ -246,7 +379,7 @@ export default function VehicleSelectionPage() {
                     {MODEL_IMAGES[currentModel.id] && (
                       <img
                         src={MODEL_IMAGES[currentModel.id]}
-                        alt={`${currentMake.make} ${currentModel.name}`}
+                        alt={`תמונת ${currentMake.make} ${currentModel.name}`}
                         className="absolute inset-0 w-full h-full object-cover"
                         loading="lazy"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -269,11 +402,25 @@ export default function VehicleSelectionPage() {
                 <span className="material-symbols-outlined">power_settings_new</span>
                 המשך לקטלוג
               </button>
+
+              {/* Bottom help message */}
+              <p className="mt-4 text-center font-body-md text-[13px] text-secondary leading-relaxed">
+                לא בטוח לגבי פרטי הרכב?{' '}
+                <a
+                  href="https://www.gov.il/he/service/vehicle_license_info"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-container hover:underline"
+                >
+                  🔍 חפש את הרכב שלך באתר משרד התחבורה
+                </a>
+              </p>
             </>
           )}
         </section>
 
-        {/* Recent Platforms */}
+        {/* Recent Platforms — only for signed-in users */}
+        {user && (
         <section>
           <div className="flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-primary-container">history</span>
@@ -284,36 +431,87 @@ export default function VehicleSelectionPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
 
-            <div className="bg-[#1E1E1E] border border-[#2D2D2D] rounded p-md shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer hover:border-primary-container transition-colors group relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-1 bg-primary-container h-full" />
-              <div className="flex justify-between items-start mb-2">
-                <span className="inline-block bg-[#00C853] text-black font-label-caps text-[10px] uppercase px-2 py-1 rounded-sm">
-                  שמור בגראז' (SAVED IN GARAGE)
-                </span>
-                <span className="material-symbols-outlined text-secondary group-hover:text-primary-container transition-colors">arrow_outward</span>
-              </div>
-              <h3 className="font-h2 text-h2 text-on-surface mb-1" dir="ltr">2021 Volkswagen Golf GTI</h3>
-              <p className="font-mono-data text-mono-data text-secondary" dir="ltr">GTI • 2.0T EA888 Gen4</p>
-            </div>
+            {recent.length === 0 && (
+              <p className="md:col-span-2 lg:col-span-3 font-body-md text-body-md text-secondary text-center py-6">
+                עדיין אין רכבים אחרונים — בחר רכב והוא יישמר כאן אוטומטית.
+              </p>
+            )}
 
-            <div className="bg-[#1E1E1E] border border-[#2D2D2D] rounded p-md shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer hover:border-primary-container transition-colors group">
-              <div className="flex justify-between items-start mb-2">
-                <span className="inline-block bg-[#353534] text-secondary font-label-caps text-[10px] uppercase px-2 py-1 rounded-sm">
-                  נצפה לאחרונה (RECENTLY VIEWED)
-                </span>
-                <span className="material-symbols-outlined text-secondary group-hover:text-primary-container transition-colors">arrow_outward</span>
-              </div>
-              <h3 className="font-h2 text-h2 text-on-surface mb-1" dir="ltr">2022 Hyundai i30 N</h3>
-              <p className="font-mono-data text-mono-data text-secondary" dir="ltr">PERFORMANCE • 2.0T G4KH</p>
-            </div>
+            {recent.map((row) => {
+              const isCurrent = selectedVehicle?.engine?.id === row.engine_id;
+              const stockHp   = row.engine?.stockHp;
+              return (
+                <div
+                  key={row.engine_id}
+                  onClick={() => handleSelectRecent(rowToVehicle(row))}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelectRecent(rowToVehicle(row)); }}
+                  className={`bg-[#1E1E1E] border rounded p-md pt-9 shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer transition-colors group relative overflow-hidden ${row.is_default ? 'border-primary-container' : 'border-[#2D2D2D] hover:border-primary-container'}`}
+                >
+                  {/* Default marker stripe */}
+                  {row.is_default && <div className="absolute top-0 right-0 w-1 bg-primary-container h-full" />}
 
-            <div className="bg-[#121212] border border-[#2D2D2D] border-dashed rounded p-md flex flex-col items-center justify-center cursor-pointer hover:border-primary-container hover:text-primary-container transition-colors text-secondary min-h-[120px]">
+                  {/* Star — set default (top-left) */}
+                  <button
+                    type="button"
+                    title={row.is_default ? 'ברירת מחדל' : 'הגדר כברירת מחדל'}
+                    aria-label="הגדר כברירת מחדל"
+                    onClick={(e) => { e.stopPropagation(); handleSetDefault(row); }}
+                    className="absolute top-2 left-2 z-10 w-7 h-7 flex items-center justify-center rounded-full hover:bg-[#2D2D2D] transition-colors"
+                  >
+                    <span className={`material-symbols-outlined text-[20px] ${row.is_default ? 'text-[#FF6B00]' : 'text-secondary'}`} style={row.is_default ? { fontVariationSettings: "'FILL' 1" } : undefined}>
+                      star
+                    </span>
+                  </button>
+
+                  {/* X — remove (top-right) */}
+                  <button
+                    type="button"
+                    title="הסר מהרשימה"
+                    aria-label="הסר מהרשימה"
+                    onClick={(e) => { e.stopPropagation(); handleDeleteRecent(row); }}
+                    className="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center rounded-full text-secondary hover:bg-red-600/20 hover:text-red-400 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">close</span>
+                  </button>
+
+                  {/* Badges */}
+                  <div className="flex flex-row-reverse flex-wrap gap-2 mb-2">
+                    {row.is_default && (
+                      <span className="inline-block bg-[#00C853] text-black font-label-caps text-[10px] uppercase px-2 py-1 rounded-sm">
+                        ⭐ ברירת מחדל
+                      </span>
+                    )}
+                    {isCurrent && (
+                      <span className="inline-block bg-[#353534] text-secondary font-label-caps text-[10px] uppercase px-2 py-1 rounded-sm">
+                        נצפה לאחרונה
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="font-h2 text-h2 text-on-surface mb-1" dir="ltr">{row.year} {row.model_name}</h3>
+                  <p className="font-mono-data text-mono-data text-secondary" dir="ltr">
+                    {row.engine_code ?? row.engine?.code}{stockHp ? ` • ${stockHp} כ"ס` : ''}
+                  </p>
+                </div>
+              );
+            })}
+
+            <div
+              onClick={() => setEntryTab('manual')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setEntryTab('manual'); }}
+              className="bg-[#121212] border border-[#2D2D2D] border-dashed rounded p-md flex flex-col items-center justify-center cursor-pointer hover:border-primary-container hover:text-primary-container transition-colors text-secondary min-h-[120px]"
+            >
               <span className="material-symbols-outlined text-3xl mb-2">add_circle</span>
               <span className="font-label-caps text-label-caps uppercase">הוסף רכב חדש (New Garage Entry)</span>
             </div>
 
           </div>
         </section>
+        )}
       </div>
     </main>
   );

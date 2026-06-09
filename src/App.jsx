@@ -1,4 +1,5 @@
-﻿import { BrowserRouter, Routes, Route } from 'react-router-dom';
+﻿import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { VehicleProvider } from './context/VehicleContext';
 import { GarageProvider }  from './context/GarageContext';
 import { AuthProvider }    from './context/AuthContext';
@@ -12,6 +13,15 @@ import CategoryViewPage    from './pages/CategoryViewPage';
 import PartDetailsPage     from './pages/PartDetailsPage';
 import MyGaragePage        from './pages/MyGaragePage';
 import UserProfilePage     from './pages/UserProfilePage';
+
+// Root redirect — the marketing landing page is a standalone static app
+// served from /landing/index.html (outside the Vite SPA bundle).
+function RootRedirect() {
+  useEffect(() => {
+    window.location.href = '/landing/index.html';
+  }, []);
+  return null;
+}
 
 export default function App() {
   return (
@@ -27,9 +37,14 @@ export default function App() {
               {/* Routes with sidebar/nav */}
               <Route element={<MainLayout />}>
 
+                {/* Root now shows the standalone marketing landing page. */}
+                <Route path="/" element={<RootRedirect />} />
+
+                {/* Vehicle selection moved here so it stays reachable. */}
+                <Route path="/select" element={<VehicleSelectionPage />} />
+
                 {/* Public — browse the catalog and keep a guest garage
                     (stored in localStorage until the user signs in). */}
-                <Route path="/" element={<VehicleSelectionPage />} />
                 <Route path="/catalog"                           element={<CatalogPage />} />
                 <Route path="/catalog/category/:categoryId"      element={<CategoryViewPage />} />
                 <Route path="/catalog/:partId"                   element={<PartDetailsPage />} />

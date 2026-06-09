@@ -9,7 +9,7 @@ function ThemeToggle({ className = '' }) {
     <button
       onClick={toggleTheme}
       title={isLight ? 'מצב כהה' : 'מצב בהיר'}
-      aria-label={isLight ? 'עבור למצב כהה' : 'עבור למצב בהיר'}
+      aria-label="החלף בין מצב כהה ובהיר"
       className={`material-symbols-outlined text-[#E0E0E0] hover:text-[#FF6B00] transition-colors cursor-pointer ${className}`}
     >
       {isLight ? 'dark_mode' : 'light_mode'}
@@ -18,13 +18,13 @@ function ThemeToggle({ className = '' }) {
 }
 
 const navItems = [
-  { to: '/',        icon: 'directions_car',         label: 'בחירת רכב'   },
+  { to: '/select',  icon: 'directions_car',         label: 'בחירת רכב'   },
   { to: '/catalog', icon: 'precision_manufacturing', label: 'קטלוג חלפים' },
   { to: '/garage',  icon: 'garage',                 label: 'הגראז\' שלי'  },
 ];
 
 const bottomNavItems = [
-  { to: '/',        icon: 'directions_car',          label: 'רכב'   },
+  { to: '/select',  icon: 'directions_car',          label: 'רכב'   },
   { to: '/catalog', icon: 'precision_manufacturing',  label: 'קטלוג' },
   { to: '/garage',  icon: 'garage',                  label: 'גראז\'' },
 ];

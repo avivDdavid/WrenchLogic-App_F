@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
+import { useVehicle } from './VehicleContext';
 
 const STORAGE_KEY = 'wrenchlogic_garage';
 
@@ -19,41 +20,57 @@ const normalizeEntry = (entry) => ({
 
 export function GarageProvider({ children }) {
   const { user } = useAuth();
+  const { selectedVehicle } = useVehicle();
 
-  const [userParts, setUserParts] = useState(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
+  // The garage is per-vehicle: every entry belongs to a specific engine/platform.
+  const vehicleId = selectedVehicle?.engine?.id ?? null;
+  // Cache key is scoped by vehicle so switching cars never bleeds parts across.
+  const cacheKey  = vehicleId ? `${STORAGE_KEY}_${vehicleId}` : null;
 
-  // Mirror to localStorage so a guest (no session) keeps their garage,
-  // and the UI has an instant offline cache.
+  // In-memory by default. Guests keep their garage only in React state
+  // (gone when the tab closes) — nothing is written to localStorage.
+  const [userParts, setUserParts] = useState([]);
+
+  // Signed-in users: hydrate the cached garage for the CURRENT vehicle on
+  // login / vehicle switch (Supabase below is the source of truth and overwrites it).
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(userParts));
-  }, [userParts]);
+    if (!user || !cacheKey) return;
+    try {
+      const stored = localStorage.getItem(cacheKey);
+      if (stored) setUserParts(JSON.parse(stored));
+    } catch { /* ignore corrupt cache */ }
+  }, [user, cacheKey]);
 
-  // Load the signed-in user's garage from Supabase (source of truth).
+  // Signed-in users: mirror the current vehicle's garage to localStorage.
+  // Guests (or no vehicle): do nothing.
+  useEffect(() => {
+    if (!user || !cacheKey) return;
+    localStorage.setItem(cacheKey, JSON.stringify(userParts));
+  }, [user, cacheKey, userParts]);
+
+  // Load the signed-in user's garage for the selected vehicle (source of truth).
   const refreshFromSupabase = useCallback(async () => {
     if (!user) return;
+    // No vehicle selected → nothing to show.
+    if (!vehicleId) { setUserParts([]); return; }
+
     const { data, error } = await supabase
       .from('garage_entries')
       .select('*, parts(*, categories(slug, name))')
-      .eq('user_id', user.id);
+      .eq('user_id', user.id)
+      .eq('vehicle_id', vehicleId);
 
     if (error) {
       console.error('[garage] failed to load from Supabase:', error.message);
       return;
     }
     setUserParts((data ?? []).map(normalizeEntry));
-  }, [user]);
+  }, [user, vehicleId]);
 
+  // Reload whenever the user or the selected vehicle changes.
   useEffect(() => {
     if (!user) return;
-    const load = async () => { await refreshFromSupabase(); };
-    load();
+    refreshFromSupabase();
   }, [user, refreshFromSupabase]);
 
   const addToGarage = async (part, status = 'planned') => {
@@ -62,11 +79,11 @@ export function GarageProvider({ children }) {
       prev.some(p => p.id === part.id) ? prev : [...prev, { ...part, status }]
     );
 
-    if (!user) return; // guest: localStorage only
+    if (!user) return; // guest: in-memory only
 
     const { error } = await supabase
       .from('garage_entries')
-      .insert({ user_id: user.id, part_id: part.id, status });
+      .insert({ user_id: user.id, part_id: part.id, status, vehicle_id: vehicleId });
 
     if (error) {
       console.error('[garage] failed to add to Supabase:', error.message);
@@ -80,11 +97,13 @@ export function GarageProvider({ children }) {
 
     if (!user) return;
 
-    const { error } = await supabase
+    const del = supabase
       .from('garage_entries')
       .delete()
       .eq('user_id', user.id)
       .eq('part_id', partId);
+    if (vehicleId) del.eq('vehicle_id', vehicleId);
+    const { error } = await del;
 
     if (error) console.error('[garage] failed to remove from Supabase:', error.message);
   };
@@ -96,11 +115,13 @@ export function GarageProvider({ children }) {
 
     if (!user) return;
 
-    const { error } = await supabase
+    const upd = supabase
       .from('garage_entries')
       .update({ status: newStatus })
       .eq('user_id', user.id)
       .eq('part_id', partId);
+    if (vehicleId) upd.eq('vehicle_id', vehicleId);
+    const { error } = await upd;
 
     if (error) console.error('[garage] failed to update status in Supabase:', error.message);
   };

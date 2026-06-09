@@ -166,7 +166,7 @@ export default function CatalogPage() {
           </div>
         ) : (
           <button
-            onClick={() => navigate('/select')}
+            onClick={() => navigate('/')}
             className="mb-lg w-full flex flex-row-reverse items-center gap-3 bg-[#1E1E1E] border border-dashed border-primary-container/50 rounded p-md text-right hover:border-primary-container transition-colors"
           >
             <span className="material-symbols-outlined text-primary-container">directions_car</span>

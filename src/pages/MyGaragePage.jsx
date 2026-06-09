@@ -67,7 +67,7 @@ export default function MyGaragePage() {
               הגראז&apos; מציג מדדי ביצועים והתאמות לפי הרכב שלך. בחר רכב כדי להתחיל.
             </p>
           </div>
-          <button onClick={() => navigate('/select')} className="w-full bg-primary-container text-[#121212] font-label-caps text-label-caps py-4 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+          <button onClick={() => navigate('/')} className="w-full bg-primary-container text-[#121212] font-label-caps text-label-caps py-4 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
             <span className="material-symbols-outlined">directions_car</span>
             בחר רכב
           </button>

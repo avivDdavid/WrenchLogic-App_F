@@ -1,4 +1,4 @@
-﻿import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+﻿import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { VehicleProvider } from './context/VehicleContext';
 import { GarageProvider }  from './context/GarageContext';
 import { AuthProvider }    from './context/AuthContext';
@@ -27,15 +27,9 @@ export default function App() {
               {/* Routes with sidebar/nav */}
               <Route element={<MainLayout />}>
 
-                {/* Root sends users straight into the catalog (no login wall).
-                    The marketing landing lives at /landing/index.html. */}
-                <Route path="/" element={<Navigate to="/catalog" replace />} />
-
-                {/* Vehicle selection — reachable from the nav. */}
-                <Route path="/select" element={<VehicleSelectionPage />} />
-
                 {/* Public — browse the catalog and keep a guest garage
                     (stored in localStorage until the user signs in). */}
+                <Route path="/" element={<VehicleSelectionPage />} />
                 <Route path="/catalog"                           element={<CatalogPage />} />
                 <Route path="/catalog/category/:categoryId"      element={<CategoryViewPage />} />
                 <Route path="/catalog/:partId"                   element={<PartDetailsPage />} />

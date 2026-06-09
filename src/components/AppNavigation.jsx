@@ -18,13 +18,13 @@ function ThemeToggle({ className = '' }) {
 }
 
 const navItems = [
-  { to: '/select',  icon: 'directions_car',         label: 'בחירת רכב'   },
+  { to: '/',        icon: 'directions_car',         label: 'בחירת רכב'   },
   { to: '/catalog', icon: 'precision_manufacturing', label: 'קטלוג חלפים' },
   { to: '/garage',  icon: 'garage',                 label: 'הגראז\' שלי'  },
 ];
 
 const bottomNavItems = [
-  { to: '/select',  icon: 'directions_car',          label: 'רכב'   },
+  { to: '/',        icon: 'directions_car',          label: 'רכב'   },
   { to: '/catalog', icon: 'precision_manufacturing',  label: 'קטלוג' },
   { to: '/garage',  icon: 'garage',                  label: 'גראז\'' },
 ];

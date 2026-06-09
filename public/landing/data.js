@@ -5,72 +5,79 @@
 (function () {
   // ---------------- CARS (cascading) ----------------
   // manufacturer -> models -> years -> engines{ code, baseHp }
+  // Helper — build a years[] array from a year range, all sharing one engine.
+  const yearsRange = (from, to, engine) => {
+    const out = [];
+    for (let y = from; y <= to; y++) out.push({ y, engines: [engine] });
+    return out;
+  };
+
+  const ENG = {
+    s54:   { code: "S54B32", he: "S54B32 — 3.2L R6", en: "S54B32 — 3.2L I6", baseHp: 343 },
+    n54:   { code: "N54B30", he: "N54B30 — Twin Turbo", en: "N54B30 — Twin Turbo", baseHp: 306 },
+    n55:   { code: "N55B30", he: "N55B30 — Single Turbo", en: "N55B30 — Single Turbo", baseHp: 306 },
+    b58m:  { code: "B58B30", he: "B58B30 — 3.0L Turbo", en: "B58B30 — 3.0L Turbo", baseHp: 335 },
+    cjxc:  { code: "CJXC", he: "CJXC — 2.0 TFSI", en: "CJXC — 2.0 TFSI", baseHp: 296 },
+    djha:  { code: "DJHA", he: "DJHA — 2.0 TFSI", en: "DJHA — 2.0 TFSI", baseHp: 306 },
+    daza:  { code: "DAZA", he: "DAZA — 2.5 TFSI R5", en: "DAZA — 2.5 TFSI I5", baseHp: 394 },
+    chhb:  { code: "CHHB", he: "CHHB — 2.0 TSI", en: "CHHB — 2.0 TSI", baseHp: 220 },
+    dkza:  { code: "DKZA", he: "DKZA — 2.0 TSI", en: "DKZA — 2.0 TSI", baseHp: 245 },
+    cjxg:  { code: "CJXG", he: "CJXG — 2.0 TSI", en: "CJXG — 2.0 TSI", baseHp: 310 },
+    ej257: { code: "EJ257", he: "EJ257 — 2.5L Boxer", en: "EJ257 — 2.5L Boxer", baseHp: 305 },
+    b58t:  { code: "B58B30", he: "B58B30 — 3.0L Turbo", en: "B58B30 — 3.0L Turbo", baseHp: 340 },
+    fa24:  { code: "FA24", he: "FA24 — 2.4L Boxer", en: "FA24 — 2.4L Boxer", baseHp: 228 },
+    k20c1: { code: "K20C1", he: "K20C1 — 2.0 VTEC Turbo", en: "K20C1 — 2.0 VTEC Turbo", baseHp: 320 },
+  };
+
   const CARS = [
     {
       id: "bmw", he: "ב.מ.וו", en: "BMW",
       models: [
-        { id: "m3e46", he: "M3 (E46)", en: "M3 (E46)", years: [
-          { y: 2003, engines: [{ code: "S54B32", he: "S54B32 — 3.2L R6", en: "S54B32 — 3.2L I6", baseHp: 343 }] },
-          { y: 2005, engines: [{ code: "S54B32", he: "S54B32 — 3.2L R6", en: "S54B32 — 3.2L I6", baseHp: 343 }] },
+        { id: "m3e46", he: "M3", en: "M3", years: yearsRange(2001, 2006, ENG.s54) },
+        { id: "335i", he: "335i", en: "335i", years: [
+          ...yearsRange(2007, 2010, ENG.n54),
+          ...yearsRange(2011, 2013, ENG.n55),
         ]},
-        { id: "335i", he: "335i (E90)", en: "335i (E90)", years: [
-          { y: 2008, engines: [{ code: "N54B30", he: "N54B30 — Twin Turbo", en: "N54B30 — Twin Turbo", baseHp: 306 }] },
-          { y: 2010, engines: [{ code: "N55B30", he: "N55B30 — Single Turbo", en: "N55B30 — Single Turbo", baseHp: 306 }] },
-        ]},
-        { id: "m240i", he: "M240i (F22)", en: "M240i (F22)", years: [
-          { y: 2017, engines: [{ code: "B58B30", he: "B58B30 — 3.0L Turbo", en: "B58B30 — 3.0L Turbo", baseHp: 335 }] },
-        ]},
+        { id: "m240i", he: "M240i", en: "M240i", years: yearsRange(2017, 2021, ENG.b58m) },
       ]
     },
     {
       id: "audi", he: "אאודי", en: "Audi",
       models: [
-        { id: "s3", he: "S3 (8V)", en: "S3 (8V)", years: [
-          { y: 2016, engines: [{ code: "CJXC", he: "CJXC — 2.0 TFSI", en: "CJXC — 2.0 TFSI", baseHp: 296 }] },
-          { y: 2018, engines: [{ code: "DJHA", he: "DJHA — 2.0 TFSI", en: "DJHA — 2.0 TFSI", baseHp: 306 }] },
+        { id: "s3", he: "S3", en: "S3", years: [
+          ...yearsRange(2015, 2017, ENG.cjxc),
+          ...yearsRange(2018, 2020, ENG.djha),
         ]},
-        { id: "rs3", he: "RS3 (8V)", en: "RS3 (8V)", years: [
-          { y: 2018, engines: [{ code: "DAZA", he: "DAZA — 2.5 TFSI R5", en: "DAZA — 2.5 TFSI I5", baseHp: 394 }] },
-        ]},
+        { id: "rs3", he: "RS3", en: "RS3", years: yearsRange(2018, 2021, ENG.daza) },
       ]
     },
     {
       id: "vw", he: "פולקסווגן", en: "Volkswagen",
       models: [
-        { id: "gti7", he: "Golf GTI (MK7)", en: "Golf GTI (MK7)", years: [
-          { y: 2015, engines: [{ code: "CHHB", he: "CHHB — 2.0 TSI", en: "CHHB — 2.0 TSI", baseHp: 220 }] },
-          { y: 2018, engines: [{ code: "DKZA", he: "DKZA — 2.0 TSI", en: "DKZA — 2.0 TSI", baseHp: 245 }] },
+        { id: "gti7", he: "Golf GTI", en: "Golf GTI", years: [
+          ...yearsRange(2013, 2016, ENG.chhb),
+          ...yearsRange(2017, 2020, ENG.dkza),
         ]},
-        { id: "golfr7", he: "Golf R (MK7)", en: "Golf R (MK7)", years: [
-          { y: 2017, engines: [{ code: "CJXG", he: "CJXG — 2.0 TSI", en: "CJXG — 2.0 TSI", baseHp: 310 }] },
-        ]},
+        { id: "golfr7", he: "Golf R", en: "Golf R", years: yearsRange(2014, 2020, ENG.cjxg) },
       ]
     },
     {
       id: "subaru", he: "סובארו", en: "Subaru",
       models: [
-        { id: "wrxsti", he: "WRX STI", en: "WRX STI", years: [
-          { y: 2015, engines: [{ code: "EJ257", he: "EJ257 — 2.5L Boxer", en: "EJ257 — 2.5L Boxer", baseHp: 305 }] },
-        ]},
+        { id: "wrxsti", he: "WRX STI", en: "WRX STI", years: yearsRange(2015, 2021, ENG.ej257) },
       ]
     },
     {
       id: "toyota", he: "טויוטה", en: "Toyota",
       models: [
-        { id: "supraa90", he: "GR Supra (A90)", en: "GR Supra (A90)", years: [
-          { y: 2020, engines: [{ code: "B58B30", he: "B58B30 — 3.0L Turbo", en: "B58B30 — 3.0L Turbo", baseHp: 340 }] },
-        ]},
-        { id: "gr86", he: "GR86", en: "GR86", years: [
-          { y: 2022, engines: [{ code: "FA24", he: "FA24 — 2.4L Boxer", en: "FA24 — 2.4L Boxer", baseHp: 228 }] },
-        ]},
+        { id: "supraa90", he: "GR Supra", en: "GR Supra", years: yearsRange(2020, 2023, ENG.b58t) },
+        { id: "gr86", he: "GR86", en: "GR86", years: yearsRange(2022, 2024, ENG.fa24) },
       ]
     },
     {
       id: "honda", he: "הונדה", en: "Honda",
       models: [
-        { id: "ctr-fk8", he: "Civic Type R (FK8)", en: "Civic Type R (FK8)", years: [
-          { y: 2019, engines: [{ code: "K20C1", he: "K20C1 — 2.0 VTEC Turbo", en: "K20C1 — 2.0 VTEC Turbo", baseHp: 320 }] },
-        ]},
+        { id: "ctr-fk8", he: "Type R", en: "Type R", years: yearsRange(2017, 2021, ENG.k20c1) },
       ]
     },
   ];

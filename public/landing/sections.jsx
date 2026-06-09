@@ -20,8 +20,8 @@ function Nav({ lang, setLang }) {
       <div className="nav-right">
         <div className="nav-links">
           <a href="#how">{t.nav.how}</a>
-          <a href="#catalog">{t.nav.catalog}</a>
-          <a href="#garage">{t.nav.garage}</a>
+          <a href="/catalog">{t.nav.catalog}</a>
+          <a href="/garage">{t.nav.garage}</a>
         </div>
         <div className="lang" role="group" aria-label="language">
           <button className={lang === "he" ? "on" : ""} onClick={() => setLang("he")}>HE</button>
@@ -34,7 +34,7 @@ function Nav({ lang, setLang }) {
 }
 
 function goLogin() {
-  document.getElementById("footer-cta")?.scrollIntoView?.({ behavior: "smooth" });
+  window.location.href = '/catalog';
 }
 
 // ---------------- HERO ----------------
@@ -157,7 +157,7 @@ function FooterCTA() {
           </div>
           <h2 className="reveal d1" data-reveal>{t.footer.h}</h2>
           <div className="reveal d2" data-reveal>
-            <button className="btn btn-primary" style={{ fontSize: 19, padding: "22px 56px" }} onClick={() => alert(t.footer.cta)}>
+            <button className="btn btn-primary" style={{ fontSize: 19, padding: "22px 56px" }} onClick={() => window.location.href = '/catalog'}>
               {t.footer.cta} <span className="arrow"><Icon.arrow /></span>
             </button>
           </div>

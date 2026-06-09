@@ -3,6 +3,16 @@
    CarSelector · Catalog · Garage (tri-segment dyno)
    ============================================================ */
 
+// Category hero images (files live in public/images/parts/, .jpg variants).
+const CAT_IMAGES = {
+  software:  "../images/parts/engine.jpg",
+  induction: "../images/parts/turbo.jpg",
+  exhaust:   "../images/parts/exhaust.jpg",
+  intake:    "../images/parts/intake.jpg",
+  cooling:   "../images/parts/fmic.jpg",
+  fuel:      "../images/parts/hpfp.jpg",
+};
+
 // ---------------- CAR SELECTOR ----------------
 function CarSelector({ sel, setSel }) {
   const { t, lang } = useLang();
@@ -24,7 +34,6 @@ function CarSelector({ sel, setSel }) {
           <i className={sel.manId ? "live" : ""}></i>
           <i className={sel.modelId ? "live" : ""}></i>
           <i className={sel.year ? "live" : ""}></i>
-          <i className={engine ? "live" : ""}></i>
         </div>
       </div>
       <div className="selector">
@@ -81,17 +90,17 @@ function CarSelector({ sel, setSel }) {
           </div>
         </div>
 
-        {/* Engine readout */}
-        <div className={`engine-readout ${engine ? "" : "empty"}`}>
-          <div>
-            <div className="lab">{s.readoutLab}</div>
-            <div className="code">{engine ? engine.code : s.emptyCode}</div>
-          </div>
-          <div className="bhp">
-            <b>{engine ? engine.baseHp : "—"}</b>
-            <span>{s.bhp}</span>
-          </div>
-        </div>
+        {/* Continue — appears once make + model + year are chosen.
+            Selection persists to localStorage (wl_sel) via App. */}
+        {sel.manId && sel.modelId && sel.year && (
+          <button
+            className="btn btn-primary"
+            style={{ width: "100%", marginTop: 8 }}
+            onClick={() => { window.location.href = "/catalog"; }}
+          >
+            {lang === "he" ? "המשך לקטלוג" : "Continue to catalog"} <span className="arrow"><Icon.arrow /></span>
+          </button>
+        )}
       </div>
     </div>
   );
@@ -109,6 +118,58 @@ function Catalog({ engine, garageIds, onAdd }) {
 
   return (
     <div>
+      {/* Category cards — image tiles that filter the list below on click */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+          gap: 14,
+          marginBottom: 32,
+        }}
+      >
+        {CATS.filter((cat) => cat.id !== "all").map((cat) => {
+          const count = PARTS.filter((p) => p.cat === cat.id).length;
+          const on = filter === cat.id;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => setFilter(cat.id)}
+              style={{
+                position: "relative",
+                height: 128,
+                borderRadius: 12,
+                overflow: "hidden",
+                cursor: "pointer",
+                padding: 0,
+                border: on ? "2px solid #FF6B00" : "1px solid rgba(255,255,255,0.12)",
+                backgroundImage: `url('${CAT_IMAGES[cat.id]}')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <span style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }}></span>
+              <span
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  color: "#fff",
+                  gap: 4,
+                }}
+              >
+                <b style={{ fontSize: 18, fontWeight: 700, letterSpacing: "0.02em" }}>{cat[lang]}</b>
+                <span style={{ fontSize: 12, opacity: 0.82, fontFamily: "var(--mono)" }}>
+                  {count} {t.garage.parts}
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       <div className="catalog-bar">
         <div className="filters">
           {CATS.map((cat) => (

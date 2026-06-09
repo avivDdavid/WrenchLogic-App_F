@@ -1,5 +1,4 @@
-﻿import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+﻿import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { VehicleProvider } from './context/VehicleContext';
 import { GarageProvider }  from './context/GarageContext';
 import { AuthProvider }    from './context/AuthContext';
@@ -13,15 +12,6 @@ import CategoryViewPage    from './pages/CategoryViewPage';
 import PartDetailsPage     from './pages/PartDetailsPage';
 import MyGaragePage        from './pages/MyGaragePage';
 import UserProfilePage     from './pages/UserProfilePage';
-
-// Root redirect — the marketing landing page is a standalone static app
-// served from /landing/index.html (outside the Vite SPA bundle).
-function RootRedirect() {
-  useEffect(() => {
-    window.location.href = '/landing/index.html';
-  }, []);
-  return null;
-}
 
 export default function App() {
   return (
@@ -37,10 +27,11 @@ export default function App() {
               {/* Routes with sidebar/nav */}
               <Route element={<MainLayout />}>
 
-                {/* Root now shows the standalone marketing landing page. */}
-                <Route path="/" element={<RootRedirect />} />
+                {/* Root sends users straight into the catalog (no login wall).
+                    The marketing landing lives at /landing/index.html. */}
+                <Route path="/" element={<Navigate to="/catalog" replace />} />
 
-                {/* Vehicle selection moved here so it stays reachable. */}
+                {/* Vehicle selection — reachable from the nav. */}
                 <Route path="/select" element={<VehicleSelectionPage />} />
 
                 {/* Public — browse the catalog and keep a guest garage

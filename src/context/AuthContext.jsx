@@ -1,5 +1,6 @@
 ﻿import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { syncProfileFromSignup } from '../lib/profile';
 
 const AuthContext = createContext(null);
 
@@ -16,6 +17,12 @@ export function AuthProvider({ children }) {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // On login, backfill the profiles row from signup metadata / a stashed avatar
+  // (covers the case where email confirmation delayed the session at signup).
+  useEffect(() => {
+    if (session?.user) syncProfileFromSignup(session.user);
+  }, [session?.user?.id]);
 
   const signOut = () => supabase.auth.signOut();
 

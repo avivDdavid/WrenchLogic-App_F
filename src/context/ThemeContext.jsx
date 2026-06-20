@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const STORAGE_KEY = 'wrenchlogic_theme';
+const LANG_KEY = 'wl_lang';
 
 const ThemeContext = createContext(null);
 
@@ -23,6 +24,18 @@ export function ThemeProvider({ children }) {
     }
   });
 
+  // Global UI language (default Hebrew). Persisted, and drives the page dir.
+  const [lang, setLang] = useState(() => {
+    try {
+      const stored = localStorage.getItem(LANG_KEY);
+      // strip accidental JSON quotes (e.g. '"he"' → 'he')
+      const clean = stored ? stored.replace(/^"|"$/g, '') : '';
+      return clean === 'he' || clean === 'en' ? clean : 'he';
+    } catch {
+      return 'he';
+    }
+  });
+
   useEffect(() => {
     applyTheme(theme);
     try {
@@ -32,12 +45,22 @@ export function ThemeProvider({ children }) {
     }
   }, [theme]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem(LANG_KEY, lang);
+    } catch {
+      // ignore storage failures (private mode, etc.)
+    }
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const toggleTheme = useCallback(() => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, lang, setLang }}>
       {children}
     </ThemeContext.Provider>
   );

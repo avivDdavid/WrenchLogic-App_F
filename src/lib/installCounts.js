@@ -22,7 +22,11 @@ export async function fetchInstallCounts() {
   }, {});
 }
 
-// Badge text for a given install count.
-export function installLabel(count) {
-  return count > 0 ? `🔧 ${count} טיונרים התקינו` : 'היה הראשון להתקין';
+// Badge text for a given install count, localized. Returns null when there are
+// no installs — callers hide the badge entirely in that case.
+export function installLabel(count, lang = 'he') {
+  if (count <= 0) return null;
+  return lang === 'en'
+    ? `🔧 ${count} tuners installed`
+    : `🔧 ${count} טיונרים התקינו`;
 }

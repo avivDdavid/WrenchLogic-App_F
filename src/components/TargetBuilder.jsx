@@ -1,10 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
+import { useTheme } from '../context/ThemeContext';
+import { partName } from '../lib/displayNames';
 
 // Supabase parts row → local part shape (matches GarageContext.addToGarage).
 const normalizePart = (p) => ({
   id:         p.id,
   name:       p.name,
+  name_en:    p.name_en ?? null,
   category:   p.categories?.slug ?? '',
   hpGain:     p.hp_gain        ?? 0,
   torqueGain: p.torque_gain_nm ?? 0,
@@ -13,14 +16,45 @@ const normalizePart = (p) => ({
 
 const SLIDER_RANGE = 400; // user can target up to currentHP + 400
 
+const T = {
+  he: {
+    title: 'יעד ה-Build שלי',
+    aria: 'יעד כוח סוס',
+    reached: (hp) => `🏆 הגעת ליעד! הרכב שלך ב-${hp} HP`,
+    gap: (hpGap, nmGap) => (
+      <>חסרים לך <span className="text-primary-container font-bold">{hpGap} HP</span> ו-<span className="text-primary-container font-bold">{nmGap} Nm</span> כדי להגיע ליעד</>
+    ),
+    recommended: 'חלקים מומלצים להשלמת היעד',
+    smallestAvail: 'השדרוג הקטן ביותר הזמין (כל השאר גדולים מהפער)',
+    none: 'אין כרגע חלקים זמינים להמלצה.',
+    addToPlan: 'הוסף לתכנון',
+  },
+  en: {
+    title: 'My Build Target',
+    aria: 'Horsepower target',
+    reached: (hp) => `🏆 Target reached! Your car is at ${hp} HP`,
+    gap: (hpGap, nmGap) => (
+      <>You need <span className="text-primary-container font-bold">{hpGap} HP</span> and <span className="text-primary-container font-bold">{nmGap} Nm</span> to reach your target</>
+    ),
+    recommended: 'Recommended parts to complete your target',
+    smallestAvail: 'Smallest available upgrade (everything else exceeds the gap)',
+    none: 'No parts available to recommend right now.',
+    addToPlan: 'Add to Plan',
+  },
+};
+
 /**
  * Target Builder — the user sets an HP goal; we show the gap and recommend
- * parts (sorted by hp_gain DESC, max 3) that help close it. The target is
+ * parts that help close it WITHOUT overshooting by much. The target is
  * persisted per-vehicle in localStorage so it survives reloads.
  */
 export default function TargetBuilder({
   currentHP, currentTorque, baseHP, baseTorque, vehicleId, ownedIds, addToGarage,
 }) {
+  const { lang } = useTheme();
+  const t = T[lang] || T.he;
+  const isHe = lang === 'he';
+
   const storageKey = `wrenchlogic_target_${vehicleId}`;
   const sliderMin = currentHP;
   const sliderMax = currentHP + SLIDER_RANGE;
@@ -58,20 +92,34 @@ export default function TargetBuilder({
   const torqueTarget = Math.round(target * (baseTorque / baseHP));
   const nmGap    = Math.max(0, torqueTarget - currentTorque);
 
-  const recommendations = useMemo(() => {
-    if (reached) return [];
+  // Recommendations driven by the REMAINING gap, not raw HP.
+  // Prefer parts that don't overshoot the gap by much (hp_gain <= gap * 1.3),
+  // ranked by closeness to the gap. If everything overshoots, suggest the
+  // single smallest available upgrade.
+  const { recommendations, onlySmallest } = useMemo(() => {
+    if (reached) return { recommendations: [], onlySmallest: false };
+    const remaining = target - currentHP; // > 0 here
     const owned = new Set(ownedIds);
-    return allParts
-      .filter(p => p.hpGain > 0 && !owned.has(p.id))
-      .sort((a, b) => b.hpGain - a.hpGain)
-      .slice(0, 3);
-  }, [allParts, ownedIds, reached]);
+    const available = allParts.filter(p => p.hpGain > 0 && !owned.has(p.id));
+    if (available.length === 0) return { recommendations: [], onlySmallest: false };
+
+    const fitting = available.filter(p => p.hpGain <= remaining * 1.3);
+    if (fitting.length > 0) {
+      const sorted = [...fitting]
+        .sort((a, b) => Math.abs(a.hpGain - remaining) - Math.abs(b.hpGain - remaining))
+        .slice(0, 3);
+      return { recommendations: sorted, onlySmallest: false };
+    }
+    // All available parts overshoot the gap → smallest one only.
+    const smallest = [...available].sort((a, b) => a.hpGain - b.hpGain).slice(0, 1);
+    return { recommendations: smallest, onlySmallest: true };
+  }, [allParts, ownedIds, reached, target, currentHP]);
 
   return (
     <section className="space-y-md">
       <div className="flex items-baseline gap-sm border-b border-[#2D2D2D] pb-base">
-        <h3 className="font-h2 text-h2 text-primary-container uppercase">יעד ה-Build שלי</h3>
-        <span className="font-label-caps text-label-caps text-[#474746] tracking-widest hidden sm:inline">TARGET BUILDER</span>
+        <h3 className="font-h2 text-h2 text-primary-container uppercase">{t.title}</h3>
+        {isHe && <span className="font-label-caps text-label-caps text-[#474746] tracking-widest hidden sm:inline">TARGET BUILDER</span>}
       </div>
 
       <div className="bg-[#1E1E1E] border border-[#2D2D2D] rounded-lg p-md md:p-lg space-y-md">
@@ -88,7 +136,7 @@ export default function TargetBuilder({
             step={5}
             value={sliderValue}
             onChange={(e) => setTarget(Number(e.target.value))}
-            aria-label="יעד כוח סוס"
+            aria-label={t.aria}
             className="flex-1 h-2 accent-[#FF6B00] cursor-pointer"
           />
         </div>
@@ -100,23 +148,22 @@ export default function TargetBuilder({
         {/* Gap / trophy */}
         {reached ? (
           <div className="flex items-center justify-center gap-2 bg-[#00C853]/10 border border-[#00C853]/40 text-[#00C853] rounded-md py-3 px-4 font-h2 text-h2 text-center">
-            🏆 הגעת ליעד! הרכב שלך ב-{currentHP} HP
+            {t.reached(currentHP)}
           </div>
         ) : (
           <>
             <p className="font-body-lg text-body-lg text-on-surface text-center">
-              חסרים לך <span className="text-primary-container font-bold">{hpGap} HP</span> ו-
-              <span className="text-primary-container font-bold">{nmGap} Nm</span> כדי להגיע ליעד
+              {t.gap(hpGap, nmGap)}
             </p>
 
             {/* Recommendations */}
             <div className="pt-sm border-t border-[#2D2D2D] space-y-sm">
-              <h4 className="font-label-caps text-label-caps text-secondary tracking-widest text-right">
-                חלקים מומלצים להשלמת היעד
+              <h4 className={`font-label-caps text-label-caps text-secondary tracking-widest ${isHe ? 'text-right' : 'text-left'}`}>
+                {onlySmallest ? t.smallestAvail : t.recommended}
               </h4>
               {recommendations.length === 0 ? (
                 <p className="font-body-md text-body-md text-secondary text-center py-4">
-                  אין כרגע חלקים זמינים להמלצה.
+                  {t.none}
                 </p>
               ) : (
                 recommendations.map(part => (
@@ -130,13 +177,19 @@ export default function TargetBuilder({
                       </span>
                     </div>
                     <div className="flex items-center gap-md min-w-0 flex-row-reverse text-right">
-                      <h5 className="font-body-md text-body-md font-semibold text-on-surface truncate" dir="ltr">{part.name}</h5>
+                      <img
+                        src={part.imageUrl || '/images/parts/part.png'}
+                        alt={partName(part, lang)}
+                        onError={(e) => { e.target.onerror = null; e.target.src = '/images/parts/part.png'; }}
+                        style={{ width: '36px', height: '36px', objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }}
+                      />
+                      <h5 className="font-body-md text-body-md font-semibold text-on-surface truncate" dir={isHe ? 'rtl' : 'ltr'}>{partName(part, lang)}</h5>
                       <button
                         onClick={() => addToGarage(part, 'planned')}
                         className="shrink-0 flex items-center gap-xs bg-primary-container/10 border border-primary-container/40 text-primary-container font-label-caps text-label-caps px-3 py-2 rounded hover:bg-primary-container hover:text-[#121212] transition-colors whitespace-nowrap"
                       >
                         <span className="material-symbols-outlined text-[16px]">add</span>
-                        הוסף לתכנון
+                        {t.addToPlan}
                       </button>
                     </div>
                   </div>

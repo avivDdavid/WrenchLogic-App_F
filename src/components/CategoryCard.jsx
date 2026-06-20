@@ -1,3 +1,7 @@
+// Shown when a category's configured image is missing (e.g. a brand-new slug
+// whose image hasn't been added yet).
+const FALLBACK_IMG = '/images/parts/engine.png';
+
 export default function CategoryCard({ title, subtitle, itemCount, imageSrc, onClick }) {
   return (
     <div
@@ -8,6 +12,7 @@ export default function CategoryCard({ title, subtitle, itemCount, imageSrc, onC
         <img
           src={imageSrc}
           alt={title}
+          onError={(e) => { e.target.onerror = null; e.target.src = FALLBACK_IMG; }}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>

@@ -1,103 +1,99 @@
 import { supabase } from './supabase';
 
-// Recent-vehicle history is per-user and capped. Re-selecting a car bumps it
-// to the top; once the cap is exceeded the oldest entry is dropped.
+// Recent-vehicle history is per-user and capped. Newest first.
 const MAX_RECENT = 5;
 
-// DB row → app vehicle shape (matches VehicleContext.selectedVehicle).
-// Prefer the full engine JSONB; fall back to the scalar columns if absent.
+// Slugify a model name → the cars.json model id (e.g. "Civic Type R" →
+// "civic-type-r"). The DB only stores model_name, but the rest of the app keys
+// off modelId (vehicle photo in MODEL_IMAGES, part fitment via compatible_models),
+// so we reconstruct it here. Matches every cars.json model id 1:1.
+export const slugifyModel = (name) =>
+  String(name || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+// DB row (real `vehicles` schema) → app vehicle shape (VehicleContext.selectedVehicle).
+// Real columns only: id, user_id, manufacturer_name, model_name, year,
+// engine_code, base_hp, base_torque_nm, base_weight_kg, created_at.
+// `id` is the DB UUID — used as garage_entries.vehicle_id.
 export const rowToVehicle = (row) => ({
-  makeId:    row.make_id,
-  makeName:  row.manufacturer_name,
-  modelId:   row.model_id,
-  modelName: row.model_name,
-  year:      row.year,
-  engine:    row.engine ?? {
-    id:          row.engine_id,
+  id:           row.id,
+  makeName:     row.manufacturer_name,
+  modelId:      slugifyModel(row.model_name),
+  modelName:    row.model_name,
+  year:         row.year,
+  baseWeightKg: row.base_weight_kg ?? null,
+  engine: {
+    // No engine_id column in the DB — synthesize a stable local key from the
+    // car's identity (used only for localStorage cache keys, never sent to DB).
+    id:          `${row.model_name}-${row.year}-${row.engine_code}`,
     code:        row.engine_code,
     stockHp:     row.base_hp,
     stockTorque: row.base_torque_nm,
   },
 });
 
-// Fetch a user's recent vehicles — default first, then most-recently used.
+// Fetch a user's recent vehicles — newest first (by created_at).
 export async function fetchRecentVehicles(userId) {
   if (!userId) return [];
   const { data, error } = await supabase
     .from('vehicles')
     .select('*')
     .eq('user_id', userId)
-    .order('is_default',   { ascending: false })
-    .order('last_used_at', { ascending: false });
+    .order('created_at', { ascending: false });
   if (error) { console.error('[vehicles] fetch failed:', error.message); return []; }
   return data ?? [];
 }
 
-// Upsert the vehicle as "just used", then prune to the 5 most recent.
+// Save the selected vehicle for a signed-in user and return its DB UUID.
+// Reuses an existing identical row (same make/model/year/engine) so we don't
+// pile up duplicates. Returns null for guests or on failure.
 export async function saveRecentVehicle(userId, vehicle) {
-  const engineId = vehicle?.engine?.id;
-  if (!userId || !engineId) return;
+  if (!userId) return null;
 
-  const payload = {
-    user_id:           userId,
-    make_id:           vehicle.makeId,
-    manufacturer_name: vehicle.makeName,
-    model_id:          vehicle.modelId,
-    model_name:        vehicle.modelName,
-    year:              vehicle.year,
-    engine_id:         engineId,
-    engine_code:       vehicle.engine.code ?? null,
-    base_hp:           vehicle.engine.stockHp ?? null,
-    base_torque_nm:    vehicle.engine.stockTorque ?? null,
-    engine:            vehicle.engine,
-    last_used_at:      new Date().toISOString(),
-  };
+  const manufacturer_name = vehicle.makeName;
+  const model_name        = vehicle.modelName;
+  const year              = vehicle.year;
+  const engine_code       = vehicle.engine?.code ?? null;
 
-  // Upsert on (user_id, engine_id): re-selecting an existing car just bumps it.
-  // NOTE: engine_id (unique per variant) is used instead of (engine_code, year)
-  // because many models share an engine code in the same year (e.g. Golf GTI &
-  // Golf R are both "EA888 Gen4" in 2022) — that key would collide.
-  const { error } = await supabase
+  // Reuse an existing matching row if present.
+  const { data: existing } = await supabase
     .from('vehicles')
-    .upsert(payload, { onConflict: 'user_id,engine_id' });
-  if (error) { console.error('[vehicles] save failed:', error.message); return; }
+    .select('id')
+    .eq('user_id', userId)
+    .eq('manufacturer_name', manufacturer_name)
+    .eq('model_name', model_name)
+    .eq('year', year)
+    .eq('engine_code', engine_code)
+    .limit(1);
+
+  if (existing && existing.length > 0) return existing[0].id;
+
+  const { data, error } = await supabase
+    .from('vehicles')
+    .insert({
+      user_id:           userId,
+      manufacturer_name,
+      model_name,
+      year,
+      engine_code,
+      base_hp:        vehicle.engine?.stockHp ?? null,
+      base_torque_nm: vehicle.engine?.stockTorque ?? null,
+      base_weight_kg: vehicle.baseWeightKg ?? null,
+    })
+    .select('id')
+    .single();
+
+  if (error) { console.error('[vehicles] save failed:', error.message); return null; }
 
   // Prune — keep only the MAX_RECENT most recent rows.
   const { data: all } = await supabase
     .from('vehicles')
-    .select('id, last_used_at')
+    .select('id, created_at')
     .eq('user_id', userId)
-    .order('last_used_at', { ascending: false });
+    .order('created_at', { ascending: false });
   if (all && all.length > MAX_RECENT) {
     const stale = all.slice(MAX_RECENT).map(r => r.id);
     await supabase.from('vehicles').delete().in('id', stale);
   }
-}
 
-// Remove one vehicle from the user's history.
-export async function deleteRecentVehicle(userId, engineId) {
-  if (!userId || !engineId) return;
-  const { error } = await supabase
-    .from('vehicles')
-    .delete()
-    .eq('user_id', userId)
-    .eq('engine_id', engineId);
-  if (error) console.error('[vehicles] delete failed:', error.message);
-}
-
-// Mark one vehicle as default and clear the flag on all the user's others.
-export async function setDefaultVehicle(userId, engineId) {
-  if (!userId || !engineId) return;
-  const clear = await supabase
-    .from('vehicles')
-    .update({ is_default: false })
-    .eq('user_id', userId);
-  if (clear.error) console.error('[vehicles] clear default failed:', clear.error.message);
-
-  const set = await supabase
-    .from('vehicles')
-    .update({ is_default: true })
-    .eq('user_id', userId)
-    .eq('engine_id', engineId);
-  if (set.error) console.error('[vehicles] set default failed:', set.error.message);
+  return data?.id ?? null;
 }

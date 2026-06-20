@@ -1,15 +1,15 @@
-import { useState, useEffect, useCallback, Fragment } from 'react';
+import { useState, useEffect, useCallback, useRef, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import carsData from '../data/cars.json';
 import HelpHint from '../components/HelpHint';
 import { useVehicle } from '../context/VehicleContext';
 import { useGarage } from '../context/GarageContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import { displayMfr } from '../lib/displayNames';
 import {
   fetchRecentVehicles,
   saveRecentVehicle,
-  deleteRecentVehicle,
-  setDefaultVehicle,
   rowToVehicle,
 } from '../lib/recentVehicles';
 
@@ -26,38 +26,116 @@ export const MODEL_IMAGES = {
   'i30':          '/images/vehicles/i30.jpg',
 };
 
-const ENGINE_HELP =
+// Manufacturer logos, keyed by the exact (Hebrew) `make` value in cars.json.
+// Files live directly under public/images/.
+const BRAND_LOGOS = {
+  'פולקסווגן': '/images/Volkswagen.png',
+  'הונדה':     '/images/honda.png',
+  'סיאט':      '/images/seat.png',
+  'יונדאי':    '/images/hyundai.png',
+};
+
+const T = {
+  he: {
+    engineHelp:
 `איפה מוצאים את קוד המנוע?
 📄 בתעודת הרכב — שדה 'סוג מנוע'
 🔧 על גבי המנוע עצמו — מדבקה או חריטה
 💻 באתר משרד התחבורה — חיפוש לפי מספר רכב
-לדוגמה: EA888, K20C1, G4KH`;
-
-const YEAR_HELP =
+לדוגמה: EA888, K20C1, G4KH`,
+    yearHelp:
 `שנת ייצור vs. שנת רכישה
 📅 שנת הייצור היא השנה שבה הרכב יוצר במפעל
 🚗 שנת הרכישה יכולה להיות שנה מאוחרת יותר
 📄 מצא בתעודת הרכב — שדה 'שנת ייצור'
-⚠️ לא שנת הרישום!`;
+⚠️ לא שנת הרישום!`,
+    introTitle: 'בחר את הרכב שלך',
+    introSub: 'WrenchLogic מותאמת אישית לפי הרכב שלך — בחר יצרן, דגם ושנה כדי לראות רק חלפים שמתאימים לך.',
+    headerTitle: 'בחירת רכב',
+    headerSub: 'בחר את נתוני הרכב כדי להציג חלפים ושיפורים שמתאימים במדויק לדגם שלך.',
+    configTarget: 'הגדרת יעד',
+    tabManual: 'הזנה ידנית ✓',
+    tabPlate: 'לוחית רישוי 🚧',
+    plateLabel: 'מספר לוחית רישוי',
+    search: 'חפש',
+    plateSoon: 'חיפוש לפי לוחית רישוי יהיה זמין בקרוב',
+    manualAvailable: '* הזנה ידנית זמינה כעת',
+    stepMake: 'יצרן', stepModel: 'דגם', stepYear: 'שנה', stepEngine: 'מנוע',
+    makeLabel: 'יצרן', modelLabel: 'דגם', yearLabel: 'שנה', engineLabel: 'קוד מנוע',
+    selectMake: 'בחר יצרן', selectModel: 'בחר דגם', selectYear: 'בחר שנה', selectEngine: 'בחר מנוע',
+    yearHelpLabel: 'עזרה: שנת ייצור',
+    engineHelpLabel: 'עזרה: קוד מנוע',
+    hp: 'כ"ס',
+    continue: 'המשך לקטלוג',
+    notSure: 'לא בטוח לגבי פרטי הרכב?',
+    govLink: '🔍 חפש את הרכב שלך באתר משרד התחבורה',
+  },
+  en: {
+    engineHelp:
+`Where do you find the engine code?
+📄 On the vehicle license — 'engine type' field
+🔧 On the engine itself — sticker or engraving
+💻 On the Ministry of Transport site — search by plate
+e.g. EA888, K20C1, G4KH`,
+    yearHelp:
+`Model year vs. purchase year
+📅 The model year is the year the car was built at the factory
+🚗 The purchase year may be later
+📄 Find it on the vehicle license — 'year of manufacture'
+⚠️ Not the registration year!`,
+    introTitle: 'Select Your Car',
+    introSub: 'WrenchLogic is personalized to your car — pick a make, model and year to see only the parts that fit you.',
+    headerTitle: 'Vehicle Selection',
+    headerSub: 'Choose your vehicle details to show parts and upgrades that fit your model exactly.',
+    configTarget: 'Configure Target',
+    tabManual: 'Manual entry ✓',
+    tabPlate: 'License plate 🚧',
+    plateLabel: 'License plate number',
+    search: 'Search',
+    plateSoon: 'License plate lookup will be available soon',
+    manualAvailable: '* Manual entry is available now',
+    stepMake: 'Manufacturer', stepModel: 'Model', stepYear: 'Year', stepEngine: 'Engine',
+    makeLabel: 'Manufacturer', modelLabel: 'Model', yearLabel: 'Year', engineLabel: 'Engine Code',
+    selectMake: 'Select Manufacturer', selectModel: 'Select Model', selectYear: 'Select Year', selectEngine: 'Select Engine',
+    yearHelpLabel: 'Help: model year',
+    engineHelpLabel: 'Help: engine code',
+    hp: 'HP',
+    continue: 'Continue to Catalog',
+    notSure: 'Not sure about your vehicle details?',
+    govLink: '🔍 Look up your vehicle on the Ministry of Transport site',
+  },
+};
 
 export default function VehicleSelectionPage() {
   const navigate = useNavigate();
   const { selectedVehicle, setSelectedVehicle } = useVehicle();
   const { clearGarage } = useGarage();
   const { user } = useAuth();
+  const { lang } = useTheme();
+  const t = T[lang] || T.he;
+  const isHe = lang === 'he';
 
-  // Entry tabs: 'manual' (הזנה ידנית, default — what the user sees first) | 'plate' (לוחית רישוי)
+  // Entry tabs: 'manual' (default — what the user sees first) | 'plate'
   const [entryTab, setEntryTab] = useState('manual');
 
-  // Recent vehicles (Supabase-backed, signed-in users only).
-  const [recent, setRecent] = useState([]);
+  // Custom manufacturer dropdown (native <select> can't render logos in options).
+  const [makeOpen, setMakeOpen] = useState(false);
+  const makeRef = useRef(null);
+
+  // Close the manufacturer dropdown on outside click.
+  useEffect(() => {
+    if (!makeOpen) return;
+    const onDown = (e) => { if (makeRef.current && !makeRef.current.contains(e.target)) setMakeOpen(false); };
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
+  }, [makeOpen]);
+
+  // Auto-select the user's default vehicle on entry (signed-in users only).
   const [autoSelected, setAutoSelected] = useState(false);
 
   const loadRecent = useCallback(async () => {
-    if (!user) { setRecent([]); return []; }
-    const rows = await fetchRecentVehicles(user.id);
-    setRecent(rows);
-    return rows;
+    if (!user) return [];
+    return await fetchRecentVehicles(user.id);
   }, [user]);
 
   // On entering the page (signed in): load history and auto-select the default.
@@ -67,7 +145,7 @@ export default function VehicleSelectionPage() {
     (async () => {
       const rows = await loadRecent();
       if (!active) return;
-      const def = rows.find(r => r.is_default);
+      const def = rows[0]; // no is_default column — newest by created_at is the default
       if (def && !autoSelected && !selectedVehicle) {
         setSelectedVehicle(rowToVehicle(def));
         setAutoSelected(true);
@@ -89,11 +167,12 @@ export default function VehicleSelectionPage() {
   const currentYear      = availableYears.find(y => y.year === Number(selectedYear));
   const availableEngines = currentYear?.engines ?? [];
 
-  const handleMakeChange = (e) => {
-    setSelectedMake(e.target.value);
+  const chooseMake = (id) => {
+    setSelectedMake(id);
     setSelectedModel('');
     setSelectedYear('');
     setSelectedEngine('');
+    setMakeOpen(false);
   };
 
   const handleModelChange = (e) => {
@@ -124,33 +203,16 @@ export default function VehicleSelectionPage() {
       year:      Number(selectedYear),
       engine,
     };
+    // Save to the DB for signed-in users and capture the row's UUID. That UUID
+    // becomes garage_entries.vehicle_id (guests stay null). Non-blocking.
+    if (user) {
+      try {
+        const dbId = await saveRecentVehicle(user.id, vehicle);
+        if (dbId) vehicle.id = dbId;
+      } catch { /* ignore */ }
+    }
     setSelectedVehicle(vehicle);
-    // Remember this car for the signed-in user (non-blocking failures).
-    if (user) { try { await saveRecentVehicle(user.id, vehicle); } catch { /* ignore */ } }
     navigate('/catalog');
-  };
-
-  // Pick a recent platform → set it active, bump its recency, go to the catalog.
-  const handleSelectRecent = async (vehicle) => {
-    const isNewVehicle = !selectedVehicle || selectedVehicle.engine.id !== vehicle.engine.id;
-    if (isNewVehicle) clearGarage();
-    setSelectedVehicle(vehicle);
-    if (user) { try { await saveRecentVehicle(user.id, vehicle); } catch { /* ignore */ } }
-    navigate('/catalog');
-  };
-
-  // Remove a recent vehicle (with confirmation).
-  const handleDeleteRecent = async (row) => {
-    const label = `${row.year} ${row.model_name}`;
-    if (!window.confirm(`האם להסיר את ${label}?`)) return;
-    setRecent(prev => prev.filter(r => r.engine_id !== row.engine_id));
-    if (user) await deleteRecentVehicle(user.id, row.engine_id);
-  };
-
-  // Mark a recent vehicle as the default platform.
-  const handleSetDefault = async (row) => {
-    setRecent(prev => prev.map(r => ({ ...r, is_default: r.engine_id === row.engine_id })));
-    if (user) { await setDefaultVehicle(user.id, row.engine_id); await loadRecent(); }
   };
 
   const selectClass =
@@ -175,20 +237,20 @@ export default function VehicleSelectionPage() {
 
         {/* Intro block */}
         <div className="text-center space-y-2 mb-lg">
-          <h1 className="font-h1 text-h1 font-bold text-white">בחר את הרכב שלך</h1>
+          <h1 className="font-h1 text-h1 font-bold text-white">{t.introTitle}</h1>
           <p className="font-body-lg text-body-lg text-[#C8C6C5] max-w-2xl mx-auto">
-            WrenchLogic מותאמת אישית לפי הרכב שלך — בחר יצרן, דגם ושנה כדי לראות רק חלפים שמתאימים לך.
+            {t.introSub}
           </p>
         </div>
 
         {/* Page Header */}
         <header className="mb-xl text-right">
           <div className="flex items-center gap-2 justify-end mb-2">
-            <span className="font-h1 text-h1 text-primary-container">בחירת רכב</span>
-            <span className="font-h2 text-h2 text-[#474747] opacity-60">(VEHICLE SELECTION)</span>
+            <span className="font-h1 text-h1 text-primary-container">{t.headerTitle}</span>
+            {isHe && <span className="font-h2 text-h2 text-[#474747] opacity-60">(VEHICLE SELECTION)</span>}
           </div>
           <p className="font-body-lg text-body-lg text-secondary">
-            בחר את נתוני הרכב כדי להציג חלפים ושיפורים שמתאימים במדויק לדגם שלך.
+            {t.headerSub}
           </p>
         </header>
 
@@ -199,8 +261,8 @@ export default function VehicleSelectionPage() {
           <div className="flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-primary-container">tune</span>
             <div>
-              <h2 className="font-h2 text-h2 text-primary-container">הגדרת יעד</h2>
-              <span className="font-label-caps text-label-caps text-[#474747]">(CONFIGURE TARGET)</span>
+              <h2 className="font-h2 text-h2 text-primary-container">{t.configTarget}</h2>
+              {isHe && <span className="font-label-caps text-label-caps text-[#474747]">(CONFIGURE TARGET)</span>}
             </div>
           </div>
 
@@ -214,7 +276,7 @@ export default function VehicleSelectionPage() {
               className={tabClass(entryTab === 'manual')}
             >
               <span className="material-symbols-outlined text-sm">keyboard</span>
-              הזנה ידנית ✓
+              {t.tabManual}
             </button>
             <button
               type="button"
@@ -224,7 +286,7 @@ export default function VehicleSelectionPage() {
               className={tabClass(entryTab === 'plate')}
             >
               <span className="material-symbols-outlined text-sm">pin</span>
-              לוחית רישוי 🚧
+              {t.tabPlate}
             </button>
           </div>
 
@@ -232,7 +294,7 @@ export default function VehicleSelectionPage() {
           {entryTab === 'plate' && (
             <div className="flex flex-col items-center gap-5 py-6">
               <label className="font-label-caps text-label-caps text-secondary self-end">
-                מספר לוחית רישוי
+                {t.plateLabel}
               </label>
               <input
                 type="text"
@@ -250,12 +312,12 @@ export default function VehicleSelectionPage() {
                 className="w-full max-w-sm bg-primary-container text-[#121212] font-bold py-4 rounded font-label-caps text-label-caps flex items-center justify-center gap-2 opacity-40 cursor-not-allowed shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
               >
                 <span className="material-symbols-outlined">search</span>
-                חפש
+                {t.search}
               </button>
               <div role="status" className="w-full max-w-sm flex items-center justify-center gap-2 bg-[#FF6B00]/10 border border-[#FF6B00]/40 text-[#FF6B00] rounded-md py-3 px-4 font-body-md text-body-md text-center">
-                חיפוש לפי לוחית רישוי יהיה זמין בקרוב
+                {t.plateSoon}
               </div>
-              <p className="text-xs text-secondary text-center">* הזנה ידנית זמינה כעת</p>
+              <p className="text-xs text-secondary text-center">{t.manualAvailable}</p>
             </div>
           )}
 
@@ -265,10 +327,10 @@ export default function VehicleSelectionPage() {
               {/* 4-step progress bar — updates live as the user selects */}
               {(() => {
                 const steps = [
-                  { label: 'יצרן', done: !!selectedMake },
-                  { label: 'דגם',  done: !!selectedModel },
-                  { label: 'שנה',  done: !!selectedYear },
-                  { label: 'מנוע', done: !!selectedEngine },
+                  { label: t.stepMake,   done: !!selectedMake },
+                  { label: t.stepModel,  done: !!selectedModel },
+                  { label: t.stepYear,   done: !!selectedYear },
+                  { label: t.stepEngine, done: !!selectedEngine },
                 ];
                 const currentIdx = steps.findIndex(s => !s.done);
                 return (
@@ -304,26 +366,67 @@ export default function VehicleSelectionPage() {
               {/* 4-Step Cascading Dropdowns */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
 
-                {/* 1 – Make */}
+                {/* 1 – Make (custom dropdown with brand logos — native <select> can't show images) */}
                 <div className="flex flex-col gap-1">
-                  <label className="font-label-caps text-label-caps text-secondary">יצרן (Make)</label>
-                  <div className="relative">
-                    <select className={selectClass} dir="rtl" value={selectedMake} onChange={handleMakeChange}>
-                      <option value="" disabled>בחר יצרן (Select Make)</option>
-                      {carsData.map(make => (
-                        <option key={make.id} value={make.id}>{make.make}</option>
-                      ))}
-                    </select>
-                    <span className="material-symbols-outlined absolute left-3 top-3 text-secondary pointer-events-none">arrow_drop_down</span>
+                  <label className="font-label-caps text-label-caps text-secondary">{t.makeLabel}</label>
+                  <div className="relative" ref={makeRef}>
+                    <button
+                      type="button"
+                      onClick={() => setMakeOpen(o => !o)}
+                      aria-haspopup="listbox"
+                      aria-expanded={makeOpen}
+                      dir={isHe ? 'rtl' : 'ltr'}
+                      className={`w-full bg-[#121212] border rounded text-[#E0E0E0] p-3 font-body-md text-body-md cursor-pointer flex items-center justify-between gap-2 focus:outline-none transition-colors ${makeOpen ? 'border-primary-container' : 'border-[#2D2D2D]'}`}
+                    >
+                      <span className="flex items-center min-w-0">
+                        {currentMake && (
+                          <img
+                            src={BRAND_LOGOS[currentMake.make]}
+                            alt={displayMfr(currentMake.make, lang)}
+                            style={{ width: '24px', height: '24px', objectFit: 'contain', marginInlineEnd: '10px' }}
+                            onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                          />
+                        )}
+                        <span className={`truncate ${currentMake ? '' : 'text-[#6B6B6B]'}`}>
+                          {currentMake ? displayMfr(currentMake.make, lang) : t.selectMake}
+                        </span>
+                      </span>
+                      <span className="material-symbols-outlined text-secondary shrink-0">arrow_drop_down</span>
+                    </button>
+                    {makeOpen && (
+                      <ul
+                        role="listbox"
+                        dir={isHe ? 'rtl' : 'ltr'}
+                        className="absolute z-30 mt-1 w-full bg-[#121212] border border-[#2D2D2D] rounded shadow-[0_8px_24px_rgba(0,0,0,0.6)] overflow-hidden"
+                      >
+                        {carsData.map(make => (
+                          <li key={make.id} role="option" aria-selected={selectedMake === make.id}>
+                            <button
+                              type="button"
+                              onClick={() => chooseMake(make.id)}
+                              className={`w-full flex items-center p-3 font-body-md text-body-md text-start hover:bg-[#1E1E1E] hover:text-primary-container transition-colors ${selectedMake === make.id ? 'text-primary-container bg-[#1E1E1E]' : 'text-[#E0E0E0]'}`}
+                            >
+                              <img
+                                src={BRAND_LOGOS[make.make]}
+                                alt={displayMfr(make.make, lang)}
+                                style={{ width: '24px', height: '24px', objectFit: 'contain', marginInlineEnd: '10px' }}
+                                onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                              />
+                              <span className="truncate">{displayMfr(make.make, lang)}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
                 {/* 2 – Model */}
                 <div className="flex flex-col gap-1">
-                  <label className="font-label-caps text-label-caps text-secondary">דגם (Model)</label>
+                  <label className="font-label-caps text-label-caps text-secondary">{t.modelLabel}</label>
                   <div className="relative">
-                    <select className={selectClass} dir="rtl" value={selectedModel} onChange={handleModelChange} disabled={!selectedMake}>
-                      <option value="" disabled>בחר דגם (Select Model)</option>
+                    <select className={selectClass} dir={isHe ? 'rtl' : 'ltr'} value={selectedModel} onChange={handleModelChange} disabled={!selectedMake}>
+                      <option value="" disabled>{t.selectModel}</option>
                       {availableModels.map(model => (
                         <option key={model.id} value={model.id}>{model.name}</option>
                       ))}
@@ -335,12 +438,12 @@ export default function VehicleSelectionPage() {
                 {/* 3 – Year */}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-1">
-                    <label className="font-label-caps text-label-caps text-secondary">שנה (Year)</label>
-                    <HelpHint text={YEAR_HELP} label="עזרה: שנת ייצור" />
+                    <label className="font-label-caps text-label-caps text-secondary">{t.yearLabel}</label>
+                    <HelpHint text={t.yearHelp} label={t.yearHelpLabel} />
                   </div>
                   <div className="relative">
-                    <select className={selectClass} dir="rtl" value={selectedYear} onChange={handleYearChange} disabled={!selectedModel}>
-                      <option value="" disabled>בחר שנה (Select Year)</option>
+                    <select className={selectClass} dir={isHe ? 'rtl' : 'ltr'} value={selectedYear} onChange={handleYearChange} disabled={!selectedModel}>
+                      <option value="" disabled>{t.selectYear}</option>
                       {availableYears.map(y => (
                         <option key={y.year} value={y.year}>{y.year}</option>
                       ))}
@@ -352,15 +455,15 @@ export default function VehicleSelectionPage() {
                 {/* 4 – Engine */}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-1">
-                    <label className="font-label-caps text-label-caps text-secondary">קוד מנוע (Engine)</label>
-                    <HelpHint text={ENGINE_HELP} label="עזרה: קוד מנוע" />
+                    <label className="font-label-caps text-label-caps text-secondary">{t.engineLabel}</label>
+                    <HelpHint text={t.engineHelp} label={t.engineHelpLabel} />
                   </div>
                   <div className="relative">
-                    <select className={selectClass} dir="rtl" value={selectedEngine} onChange={(e) => setSelectedEngine(e.target.value)} disabled={!selectedYear}>
-                      <option value="" disabled>בחר מנוע (Select Engine)</option>
+                    <select className={selectClass} dir={isHe ? 'rtl' : 'ltr'} value={selectedEngine} onChange={(e) => setSelectedEngine(e.target.value)} disabled={!selectedYear}>
+                      <option value="" disabled>{t.selectEngine}</option>
                       {availableEngines.map(engine => (
                         <option key={engine.id} value={engine.id}>
-                          {`${engine.code} — ${engine.displacement} (${engine.stockHp} כ"ס)`}
+                          {`${engine.code} — ${engine.displacement} (${engine.stockHp} ${t.hp})`}
                         </option>
                       ))}
                     </select>
@@ -379,7 +482,7 @@ export default function VehicleSelectionPage() {
                     {MODEL_IMAGES[currentModel.id] && (
                       <img
                         src={MODEL_IMAGES[currentModel.id]}
-                        alt={`תמונת ${currentMake.make} ${currentModel.name}`}
+                        alt={`${displayMfr(currentMake.make, lang)} ${currentModel.name}`}
                         className="absolute inset-0 w-full h-full object-cover"
                         loading="lazy"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -387,7 +490,7 @@ export default function VehicleSelectionPage() {
                     )}
                   </div>
                   <div className="text-right pr-1">
-                    <p className="font-label-caps text-label-caps text-secondary uppercase">{currentMake.make}</p>
+                    <p className="font-label-caps text-label-caps text-secondary uppercase">{displayMfr(currentMake.make, lang)}</p>
                     <h3 className="font-h2 text-h2 text-on-surface" dir="ltr">{currentModel.name}</h3>
                   </div>
                 </div>
@@ -400,118 +503,24 @@ export default function VehicleSelectionPage() {
                 className="w-full bg-primary-container text-[#121212] font-bold py-4 rounded font-label-caps text-label-caps flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_2px_4px_rgba(0,0,0,0.5)] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <span className="material-symbols-outlined">power_settings_new</span>
-                המשך לקטלוג
+                {t.continue}
               </button>
 
               {/* Bottom help message */}
               <p className="mt-4 text-center font-body-md text-[13px] text-secondary leading-relaxed">
-                לא בטוח לגבי פרטי הרכב?{' '}
+                {t.notSure}{' '}
                 <a
                   href="https://www.gov.il/he/service/vehicle_license_info"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary-container hover:underline"
                 >
-                  🔍 חפש את הרכב שלך באתר משרד התחבורה
+                  {t.govLink}
                 </a>
               </p>
             </>
           )}
         </section>
-
-        {/* Recent Platforms — only for signed-in users */}
-        {user && (
-        <section>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="material-symbols-outlined text-primary-container">history</span>
-            <div>
-              <h2 className="font-h2 text-h2 text-primary-container">רכבים אחרונים</h2>
-              <span className="font-label-caps text-label-caps text-[#474747]">(RECENT PLATFORMS)</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-
-            {recent.length === 0 && (
-              <p className="md:col-span-2 lg:col-span-3 font-body-md text-body-md text-secondary text-center py-6">
-                עדיין אין רכבים אחרונים — בחר רכב והוא יישמר כאן אוטומטית.
-              </p>
-            )}
-
-            {recent.map((row) => {
-              const isCurrent = selectedVehicle?.engine?.id === row.engine_id;
-              const stockHp   = row.engine?.stockHp;
-              return (
-                <div
-                  key={row.engine_id}
-                  onClick={() => handleSelectRecent(rowToVehicle(row))}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelectRecent(rowToVehicle(row)); }}
-                  className={`bg-[#1E1E1E] border rounded p-md pt-9 shadow-[0_2px_4px_rgba(0,0,0,0.5)] cursor-pointer transition-colors group relative overflow-hidden ${row.is_default ? 'border-primary-container' : 'border-[#2D2D2D] hover:border-primary-container'}`}
-                >
-                  {/* Default marker stripe */}
-                  {row.is_default && <div className="absolute top-0 right-0 w-1 bg-primary-container h-full" />}
-
-                  {/* Star — set default (top-left) */}
-                  <button
-                    type="button"
-                    title={row.is_default ? 'ברירת מחדל' : 'הגדר כברירת מחדל'}
-                    aria-label="הגדר כברירת מחדל"
-                    onClick={(e) => { e.stopPropagation(); handleSetDefault(row); }}
-                    className="absolute top-2 left-2 z-10 w-7 h-7 flex items-center justify-center rounded-full hover:bg-[#2D2D2D] transition-colors"
-                  >
-                    <span className={`material-symbols-outlined text-[20px] ${row.is_default ? 'text-[#FF6B00]' : 'text-secondary'}`} style={row.is_default ? { fontVariationSettings: "'FILL' 1" } : undefined}>
-                      star
-                    </span>
-                  </button>
-
-                  {/* X — remove (top-right) */}
-                  <button
-                    type="button"
-                    title="הסר מהרשימה"
-                    aria-label="הסר מהרשימה"
-                    onClick={(e) => { e.stopPropagation(); handleDeleteRecent(row); }}
-                    className="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center rounded-full text-secondary hover:bg-red-600/20 hover:text-red-400 transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">close</span>
-                  </button>
-
-                  {/* Badges */}
-                  <div className="flex flex-row-reverse flex-wrap gap-2 mb-2">
-                    {row.is_default && (
-                      <span className="inline-block bg-[#00C853] text-black font-label-caps text-[10px] uppercase px-2 py-1 rounded-sm">
-                        ⭐ ברירת מחדל
-                      </span>
-                    )}
-                    {isCurrent && (
-                      <span className="inline-block bg-[#353534] text-secondary font-label-caps text-[10px] uppercase px-2 py-1 rounded-sm">
-                        נצפה לאחרונה
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="font-h2 text-h2 text-on-surface mb-1" dir="ltr">{row.year} {row.model_name}</h3>
-                  <p className="font-mono-data text-mono-data text-secondary" dir="ltr">
-                    {row.engine_code ?? row.engine?.code}{stockHp ? ` • ${stockHp} כ"ס` : ''}
-                  </p>
-                </div>
-              );
-            })}
-
-            <div
-              onClick={() => setEntryTab('manual')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setEntryTab('manual'); }}
-              className="bg-[#121212] border border-[#2D2D2D] border-dashed rounded p-md flex flex-col items-center justify-center cursor-pointer hover:border-primary-container hover:text-primary-container transition-colors text-secondary min-h-[120px]"
-            >
-              <span className="material-symbols-outlined text-3xl mb-2">add_circle</span>
-              <span className="font-label-caps text-label-caps uppercase">הוסף רכב חדש (New Garage Entry)</span>
-            </div>
-
-          </div>
-        </section>
-        )}
       </div>
     </main>
   );

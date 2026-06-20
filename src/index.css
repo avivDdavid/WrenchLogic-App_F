@@ -10,6 +10,21 @@
 }
 
 /* ============================================================
+   LTR (ENGLISH) DIRECTION OVERRIDES
+   The app is authored RTL-first with hard-coded physical utilities
+   (text-right, flex-row-reverse) and a few dir="rtl" attributes that
+   ignore the document direction. When the document is LTR (English),
+   flip those to their LTR equivalents so the whole UI mirrors
+   correctly. Scoped to html[dir="ltr"], so Hebrew (rtl) is untouched.
+   The higher specificity (html[dir=ltr] .x) beats the Tailwind utility.
+   ============================================================ */
+html[dir="ltr"] [dir="rtl"]         { direction: ltr; }
+html[dir="ltr"] .text-right         { text-align: left; }
+html[dir="ltr"] .flex-row-reverse   { flex-direction: row; }
+@media (min-width: 640px) { html[dir="ltr"] .sm\:flex-row-reverse { flex-direction: row; } }
+@media (min-width: 768px) { html[dir="ltr"] .md\:flex-row-reverse { flex-direction: row; } }
+
+/* ============================================================
    LIGHT MODE
    The app is authored in dark mode with hard-coded color classes
    (e.g. bg-[#1E1E1E]) plus semantic tokens (text-on-surface).

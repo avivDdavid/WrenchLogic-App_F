@@ -22,6 +22,7 @@ wrench-logic-backup-*/
 # ---- Misc build log & meaningless root-level lockfile stub ----
 /build_output.txt
 /package-lock.json
+/commit_msg.txt
 
 # ---- Claude Code machine-local settings (keep launch.json, drop the rest) ----
 settings.local.json
